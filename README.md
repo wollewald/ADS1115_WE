@@ -5,4 +5,4 @@ I have have tried to optimize the library for convenience to use. If you try the
 
 All features of the ADS1115 are implemented, including alert functions. 
 
-If you like the library it would be cool if you can givit a star. If you find bugs, please inform me. 
+If you like the library it would be cool if you can give it a star. If you find bugs, please inform me. 
