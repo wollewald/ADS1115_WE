@@ -67,7 +67,7 @@ void setup() {
    *  ADS1115_ASSERT_AFTER_4  -> after 4 conversions
    *  ADS1115_DISABLE_ALERT   -> disable comparator / alert pin (default) 
    */
-  adc.setAlertPinMode(ADS1115_ASSERT_AFTER_1); // you can also choose ...AFTER_2 or 3 for this sketch
+  adc.setAlertPinMode(ADS1115_ASSERT_AFTER_1); // you can also choose ...AFTER_2 or 4 for this sketch
 
   /* Set the conversion rate in SPS (samples per second)
    * Options should be self-explaining: 
