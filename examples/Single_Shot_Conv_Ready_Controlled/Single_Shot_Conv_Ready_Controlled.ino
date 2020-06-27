@@ -86,7 +86,7 @@ void setup() {
    *  not latched)  
    * 
    *  ADS1115_MAX_LIMIT
-   * ADS1115_WINDOW
+   *  ADS1115_WINDOW
    * 
    */
   //adc.setAlertModeAndLimit_V(ADS1115_MAX_LIMIT, 3.0, 1.5); //uncomment if you want to change the default
