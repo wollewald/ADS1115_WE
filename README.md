@@ -1,2 +1,8 @@
 # ADS1115_WE
-An Arduino library for the 16-bit, 4 channel ADS1115 ADC. convenient to use. All features of the ADS1115 are implemented, including alert functions. 
+An Arduino library for the 16-bit, 4 channel ADS1115 ADC with gain and alert functions.
+
+I have have tried to optimize the library for convenience to use. If you try the examples I recommend to start with Single_Shot.ino. You'll find more details here soon: https://wolles-elektronikkiste.de/ADS1115_WE.
+
+All features of the ADS1115 are implemented, including alert functions. 
+
+If you like the library it would be cool if you can givit a star. If you find bugs, please inform me. 
