@@ -3,7 +3,7 @@
 *
 * This sketch shows how you can use the alert pin with the latch function. The 
 * only difference to Alert_Window_Mode.ino is that latch is enabled (line 112) 
-* and that the alert pin needs to be unlatched (line 148). Try and see the difference.
+* and that the alert pin needs to be unlatched (line 147). Try and see the difference.
 * As an alternative to the unlatchAlertPin function you can use getResult_V. 
 * Internally unlatchAlertPin just performs a read of the conversion register.
 *  
@@ -131,7 +131,6 @@ void setup() {
   Serial.println();
   Serial.println("Waiting for Value out of Limit");
   attachInterrupt(digitalPinToInterrupt(interruptPin), outOfLimitAlert, FALLING);
-  adc.startSingleMeasurement();
 }
 
 void loop() {
@@ -150,6 +149,6 @@ void loop() {
 }
 
 void outOfLimitAlert(){
-  detachInterrupt(2);
+  detachInterrupt(interruptPin);
   outOfLimit = true;
 }
