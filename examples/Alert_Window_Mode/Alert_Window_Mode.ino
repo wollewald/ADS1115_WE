@@ -129,7 +129,6 @@ void setup() {
   Serial.println();
   Serial.println("Waiting for Value out of Limit");
   attachInterrupt(digitalPinToInterrupt(interruptPin), outOfLimitAlert, FALLING);
-  adc.startSingleMeasurement();
 }
 
 void loop() {
