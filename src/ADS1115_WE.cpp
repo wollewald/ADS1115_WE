@@ -167,7 +167,7 @@ void ADS1115_WE::setAlertPinToConversionReady(){
 	writeRegister(ADS1115_HI_THRESH_REG, (1<<15));
 }
 
-void ADS1115_WE::unlatchAlertPin(){
+void ADS1115_WE::clearAlert(){
 	readRegister(ADS1115_CONV_REG);
 }
 
