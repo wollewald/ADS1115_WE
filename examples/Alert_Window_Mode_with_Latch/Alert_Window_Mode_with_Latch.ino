@@ -144,7 +144,7 @@ void loop() {
     digitalWrite(ledPin,LOW);
     outOfLimit = false;
     attachInterrupt(digitalPinToInterrupt(interruptPin), outOfLimitAlert, FALLING); 
-    adc.unlatchAlertPin(); // unlatches the alert Pin (alternatively use getResult_V)
+    adc.clearAlert(); // unlatches the alert Pin (alternatively use getResult_V)
   } 
 }
 
