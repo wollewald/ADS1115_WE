@@ -121,7 +121,7 @@ public:
 	float getResult_V();
 	float getResult_mV();
 	void setAlertPinToConversionReady();
-	void unlatchAlertPin();
+	void clearAlert();
 	
 		
 private:
