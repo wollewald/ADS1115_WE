@@ -146,6 +146,6 @@ void loop() {
 }
 
 void outOfLimitAlert(){
-  detachInterrupt(2);
+  detachInterrupt(interruptPin);
   outOfLimit = true;
 }
