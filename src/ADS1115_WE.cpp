@@ -37,6 +37,8 @@ bool ADS1115_WE::init(){
 	}
 	writeRegister(ADS1115_CONFIG_REG, ADS1115_REG_RESET_VAL);
 	setVoltageRange_mV(ADS1115_RANGE_2048);
+	writeRegister(ADS1115_LO_THRESH_REG, 0x8000);
+	writeRegister(ADS1115_HI_THRESH_REG, 0x7FFF);
 	return 1;
 }
 
@@ -88,6 +90,7 @@ void ADS1115_WE::setMeasureMode(ADS1115_MEASURE_MODE mode){
 }
 
 void ADS1115_WE::setVoltageRange_mV(ADS1115_RANGE range){
+	uint16_t currentVoltageRange = voltageRange;
 	
 	switch(range){
 		case ADS1115_RANGE_6144:
@@ -115,19 +118,20 @@ void ADS1115_WE::setVoltageRange_mV(ADS1115_RANGE range){
 	uint16_t currentAlertPinMode = currentConfReg & 3;
 	uint16_t currentCompMode = (currentConfReg>>4) & 1;
 	
-	if ((currentRange != range) && (currentAlertPinMode != ADS1115_DISABLE_ALERT)){
-		int16_t alertLimit = readRegister(ADS1115_HI_THRESH_REG);
-		alertLimit = (alertLimit/currentRange) * range;
-		writeRegister(ADS1115_HI_THRESH_REG, alertLimit);
-		
-		alertLimit = readRegister(ADS1115_LO_THRESH_REG);
-		alertLimit = (alertLimit/currentRange) * range;
-		writeRegister(ADS1115_LO_THRESH_REG, alertLimit);
-	}
-		
 	currentConfReg &= ~(0x0E00);	
 	currentConfReg |= range;
 	writeRegister(ADS1115_CONFIG_REG, currentConfReg);
+	
+	if ((currentRange != range) && (currentAlertPinMode != ADS1115_DISABLE_ALERT)){
+		int16_t alertLimit = readRegister(ADS1115_HI_THRESH_REG);
+		alertLimit = alertLimit * (currentVoltageRange * 1.0 / voltageRange);
+		writeRegister(ADS1115_HI_THRESH_REG, alertLimit);
+		
+		alertLimit = readRegister(ADS1115_LO_THRESH_REG);
+		alertLimit = alertLimit * (currentVoltageRange * 1.0 / voltageRange);
+		writeRegister(ADS1115_LO_THRESH_REG, alertLimit);
+	}
+		
 }
 
 void ADS1115_WE::setCompareChannels(ADS1115_MUX mux){
