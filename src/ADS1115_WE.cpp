@@ -120,11 +120,9 @@ void ADS1115_WE::setVoltageRange_mV(ADS1115_RANGE range){
 		alertLimit = (alertLimit/currentRange) * range;
 		writeRegister(ADS1115_HI_THRESH_REG, alertLimit);
 		
-		if(currentCompMode != ADS1115_MAX_LIMIT){
-			int16_t alertLimit = readRegister(ADS1115_LO_THRESH_REG);
-			alertLimit = (alertLimit/currentRange) * range;
-			writeRegister(ADS1115_LO_THRESH_REG, alertLimit);
-		}
+		alertLimit = readRegister(ADS1115_LO_THRESH_REG);
+		alertLimit = (alertLimit/currentRange) * range;
+		writeRegister(ADS1115_LO_THRESH_REG, alertLimit);
 	}
 		
 	currentConfReg &= ~(0x0E00);	
