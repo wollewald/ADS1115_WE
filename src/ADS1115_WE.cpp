@@ -31,7 +31,7 @@ void ADS1115_WE::reset(){
 
 bool ADS1115_WE::init(){	
 	Wire.beginTransmission(i2cAddress);
-    	uint8_t success = Wire.endTransmission();
+    uint8_t success = Wire.endTransmission();
 	if(success){
 		return 0;
 	}
@@ -192,7 +192,7 @@ uint8_t ADS1115_WE::writeRegister(uint8_t reg, uint16_t val){
 }
   
 uint16_t ADS1115_WE::readRegister(uint8_t reg){
-  uint8_t MSByte, LSByte = 0;
+  uint8_t MSByte = 0, LSByte = 0;
   uint16_t regValue = 0;
   Wire.beginTransmission(i2cAddress);
   Wire.write(reg);
