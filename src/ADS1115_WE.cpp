@@ -31,7 +31,7 @@ void ADS1115_WE::reset(){
 
 bool ADS1115_WE::init(){	
 	Wire.beginTransmission(i2cAddress);
-    bool success = Wire.endTransmission();
+    	uint8_t success = Wire.endTransmission();
 	if(success){
 		return 0;
 	}
