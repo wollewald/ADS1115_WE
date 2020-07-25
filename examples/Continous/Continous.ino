@@ -13,7 +13,7 @@
 #define I2C_ADDRESS 0x48
 
 ADS1115_WE adc(I2C_ADDRESS);
-// ADS1115_WE adc = ADS1115_WE(); // Alternative: sets default address 0x48
+// ADS1115_WE adc = ADS1115_WE(); // Alternative: uses default address 0x48
 
 void setup() {
   Wire.begin();
@@ -32,7 +32,7 @@ void setup() {
    * ADS1115_RANGE_0512  ->  +/- 512 mV
    * ADS1115_RANGE_0256  ->  +/- 256 mV
    */
-  adc.setVoltageRange_mV(ADS1115_RANGE_6144); //comment line/change paramater to change range
+  adc.setVoltageRange_mV(ADS1115_RANGE_6144); //comment line/change parameter to change range
 
   /* Set the inputs to be compared
    *  
@@ -45,7 +45,7 @@ void setup() {
    *  ADS1115_COMP_2_GND  ->  compares 2 with GND
    *  ADS1115_COMP_3_GND  ->  compares 3 with GND
    */
-  adc.setCompareChannels(ADS1115_COMP_0_GND); //comment line/change paramater to change channel
+  adc.setCompareChannels(ADS1115_COMP_0_GND); //comment line/change parameter to change channel
 
   /* Set number of conversions after which the alert pin will be active
    * - or you can disable the alert 
@@ -76,7 +76,7 @@ void setup() {
    *  ADS1115_CONTINOUS  ->  continous mode
    *  ADS1115_SINGLE     ->  single shot mode (default)
    */
-  adc.setMeasureMode(ADS1115_CONTINOUS); //comment line/change paramater to change mode
+  adc.setMeasureMode(ADS1115_CONTINOUS); //comment line/change parameter to change mode
 
    /* Choose maximum limit or maxium and minimum alert limit (window)in Volt - alert pin will 
    *  be active when measured values are beyond the maximum limit or outside the window 
