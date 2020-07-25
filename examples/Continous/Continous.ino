@@ -8,12 +8,12 @@
 * 
 ***************************************************************************/
 
-#include<ADS1115_WE.h> 
-#include<Wire.h>
+#include <ADS1115_WE.h> 
+#include <Wire.h>
 #define I2C_ADDRESS 0x48
 
 ADS1115_WE adc(I2C_ADDRESS);
-// ADS1115_WE adc = ADS1115_WE(); // Alternative: sets default address 0x48
+// ADS1115_WE adc = ADS1115_WE(); // Alternative: uses default address 0x48
 
 void setup() {
   Wire.begin();
@@ -32,7 +32,7 @@ void setup() {
    * ADS1115_RANGE_0512  ->  +/- 512 mV
    * ADS1115_RANGE_0256  ->  +/- 256 mV
    */
-  adc.setVoltageRange_mV(ADS1115_RANGE_6144); //comment line/change paramater to change range
+  adc.setVoltageRange_mV(ADS1115_RANGE_6144); //comment line/change parameter to change range
 
   /* Set the inputs to be compared
    *  
@@ -45,7 +45,7 @@ void setup() {
    *  ADS1115_COMP_2_GND  ->  compares 2 with GND
    *  ADS1115_COMP_3_GND  ->  compares 3 with GND
    */
-  adc.setCompareChannels(ADS1115_COMP_0_GND); //comment line/change paramater to change channel
+  adc.setCompareChannels(ADS1115_COMP_0_GND); //comment line/change parameter to change channel
 
   /* Set number of conversions after which the alert pin will be active
    * - or you can disable the alert 
