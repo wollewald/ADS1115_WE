@@ -17,7 +17,7 @@ int interruptPin = 2;
 volatile bool convReady = false;
 
 ADS1115_WE adc(I2C_ADDRESS);
-// ADS1115_WE adc = ADS1115_WE(); // Alternative: sets default address 0x48
+// ADS1115_WE adc = ADS1115_WE(); // Alternative: uses default address 0x48
 
 void setup() {
   Wire.begin();
@@ -37,7 +37,7 @@ void setup() {
    * ADS1115_RANGE_0512  ->  +/- 512 mV
    * ADS1115_RANGE_0256  ->  +/- 256 mV
    */
-  adc.setVoltageRange_mV(ADS1115_RANGE_6144); //comment line/change paramater to change range
+  adc.setVoltageRange_mV(ADS1115_RANGE_6144); //comment line/change parameter to change range
 
   /* Set the inputs to be compared
    *  
@@ -50,7 +50,7 @@ void setup() {
    *  ADS1115_COMP_2_GND  ->  compares 2 with GND
    *  ADS1115_COMP_3_GND  ->  compares 3 with GND
    */
-  adc.setCompareChannels(ADS1115_COMP_0_GND); //comment line/change paramater to change channels
+  adc.setCompareChannels(ADS1115_COMP_0_GND); //comment line/change parameter to change channels
 
   /* Set number of conversions out of limit after which the alert pin will be active
    * - or you can disable the alert (including conversion ready alert)
