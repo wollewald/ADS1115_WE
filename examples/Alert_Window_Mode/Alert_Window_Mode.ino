@@ -10,15 +10,15 @@
 * 
 ***************************************************************************/
 
-#include<ADS1115_WE.h> 
-#include<Wire.h>
+#include <ADS1115_WE.h> 
+#include <Wire.h>
 #define I2C_ADDRESS 0x48
 volatile int interruptPin = 2;
 int ledPin = 10;
 volatile bool outOfLimit = false;
 
 ADS1115_WE adc(I2C_ADDRESS);
-// ADS1115_WE adc = ADS1115_WE(); // Alternative: sets default address 0x48
+// ADS1115_WE adc = ADS1115_WE(); // Alternative: uses default address 0x48
 
 void setup() {
   Wire.begin();
@@ -42,7 +42,7 @@ void setup() {
    * ADS1115_RANGE_0512  ->  +/- 512 mV
    * ADS1115_RANGE_0256  ->  +/- 256 mV
    */
-  adc.setVoltageRange_mV(ADS1115_RANGE_6144); //comment line/change paramater to change range
+  adc.setVoltageRange_mV(ADS1115_RANGE_6144); //comment line/change parameter to change range
 
   /* Set the inputs to be compared
    *  
@@ -55,7 +55,7 @@ void setup() {
    *  ADS1115_COMP_2_GND  ->  compares 2 with GND
    *  ADS1115_COMP_3_GND  ->  compares 3 with GND
    */
-  adc.setCompareChannels(ADS1115_COMP_0_GND); //comment line/change paramater to change range
+  adc.setCompareChannels(ADS1115_COMP_0_GND); //comment line/change parameter to change range
 
   /* Set number of conversions out of limit after which the alert pin will be active
    * - or you can disable the alert (including conversion ready alert)
@@ -65,7 +65,7 @@ void setup() {
    *  ADS1115_ASSERT_AFTER_4  -> after 4 conversions
    *  ADS1115_DISABLE_ALERT   -> disable comparator / alert pin (default) 
    */
-  adc.setAlertPinMode(ADS1115_ASSERT_AFTER_1); // alternative: ...AFTER_2 or 4. If you disable this sketch dos not work
+  adc.setAlertPinMode(ADS1115_ASSERT_AFTER_1); // alternative: ...AFTER_2 or 4. If you disable this sketch does not work
 
   /* Set the conversion rate in SPS (samples per second)
    * Options should be self-explaining: 
