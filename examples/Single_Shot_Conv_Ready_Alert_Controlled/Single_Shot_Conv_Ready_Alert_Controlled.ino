@@ -106,7 +106,7 @@ void setup() {
 
   /* Sets the alert pin polarity if active:
    *  
-   *  /* Enable or disable latch. If latch is enabled the alarm pin will be active until the
+   * Enable or disable latch. If latch is enabled the alarm pin will be active until the
    * conversion register is read (getResult functions). If disabled the alarm pin will be
    * deactivated with next value within limits. 
    *  
