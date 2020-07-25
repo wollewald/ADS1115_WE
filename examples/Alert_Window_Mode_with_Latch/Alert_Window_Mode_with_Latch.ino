@@ -20,7 +20,7 @@ int ledPin = 10;
 volatile bool outOfLimit = false;
 
 ADS1115_WE adc(I2C_ADDRESS);
-// ADS1115_WE adc = ADS1115_WE(); // Alternative: sets default address 0x48
+// ADS1115_WE adc = ADS1115_WE(); // Alternative: uses default address 0x48
 
 void setup() {
   Wire.begin();
@@ -44,7 +44,7 @@ void setup() {
    * ADS1115_RANGE_0512  ->  +/- 512 mV
    * ADS1115_RANGE_0256  ->  +/- 256 mV
    */
-  adc.setVoltageRange_mV(ADS1115_RANGE_6144); //comment line/change paramater to change range
+  adc.setVoltageRange_mV(ADS1115_RANGE_6144); //comment line/change parameter to change range
 
   /* Set the inputs to be compared
    *  
