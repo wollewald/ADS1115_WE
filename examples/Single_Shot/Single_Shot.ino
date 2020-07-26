@@ -13,7 +13,7 @@
 #define I2C_ADDRESS 0x48
 
 ADS1115_WE adc(I2C_ADDRESS);
-// ADS1115_WE adc = ADS1115_WE(); // Alternative: uses default address 0x48
+// ADS1115_WE adc = ADS1115_WE(); // Alternative: sets default address 0x48
 
 void setup() {
   Wire.begin();
@@ -32,7 +32,7 @@ void setup() {
    * ADS1115_RANGE_0512  ->  +/- 512 mV
    * ADS1115_RANGE_0256  ->  +/- 256 mV
    */
-  adc.setVoltageRange_mV(ADS1115_RANGE_6144); //comment line/change parameter to change range
+  adc.setVoltageRange_mV(ADS1115_RANGE_6144); //comment line/change paramater to change range
 
   /* Set the inputs to be compared
    *  
@@ -101,7 +101,7 @@ void setup() {
 
   /* Sets the alert pin polarity if active:
    *  
-   * Enable or disable latch. If latch is enabled the alarm pin will be active until the
+   *  /* Enable or disable latch. If latch is enabled the alarm pin will be active until the
    * conversion register is read (getResult functions). If disabled the alarm pin will be
    * deactivated with next value within limits. 
    *  
@@ -116,40 +116,37 @@ void setup() {
   //adc.setAlertPinToConversionReady(); //uncomment if you want to change the default
 
   Serial.println("ADS1115 Example Sketch - Single Shot Mode");
+  Serial.println("Channel / Voltage [V]: ");
   Serial.println();
 }
 
 void loop() {
   float voltage = 0.0;
 
-  adc.setCompareChannels(ADS1115_COMP_0_GND);
+  Serial.print("0: ");
+  voltage = readChannel(ADS1115_COMP_0_GND);
+  Serial.print(voltage);
+
+  Serial.print(",   1: ");
+  voltage = readChannel(ADS1115_COMP_1_GND);
+  Serial.print(voltage);
+  
+  Serial.print(",   2: ");
+  voltage = readChannel(ADS1115_COMP_2_GND);
+  Serial.print(voltage);
+
+  Serial.print(",   3: ");
+  voltage = readChannel(ADS1115_COMP_3_GND);
+  Serial.println(voltage);
+
+  delay(1000);
+}
+
+float readChannel(ADS1115_MUX channel) {
+  float voltage = 0.0;
+  adc.setCompareChannels(channel);
   adc.startSingleMeasurement();
   while(adc.isBusy()){}
   voltage = adc.getResult_V(); // alternative: getResult_mV for Millivolt
-  Serial.print("Channel 0 vs GND [V]: ");
-  Serial.println(voltage);
-
-  adc.setCompareChannels(ADS1115_COMP_1_GND);
-  adc.startSingleMeasurement();
-  while(adc.isBusy()){}
-  voltage = adc.getResult_V(); // alternative: getResult_mV for Millivolt
-  Serial.print("Channel 1 vs GND [V]: ");
-  Serial.println(voltage);
-
-  adc.setCompareChannels(ADS1115_COMP_2_GND);
-  adc.startSingleMeasurement();
-  while(adc.isBusy()){}
-  voltage = adc.getResult_V(); // alternative: getResult_mV for Millivolt
-  Serial.print("Channel 2 vs GND [V]: ");
-  Serial.println(voltage);
-
-  adc.setCompareChannels(ADS1115_COMP_3_GND);
-  adc.startSingleMeasurement();
-  while(adc.isBusy()){}
-  voltage = adc.getResult_V(); // alternative: getResult_mV for Millivolt
-  Serial.print("Channel 3 vs GND [V]: ");
-  Serial.println(voltage);
-
-  Serial.println("-------------------------------");
-  delay(2000);
+  return voltage;
 }
