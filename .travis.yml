@@ -32,10 +32,12 @@ cache:
 
 env:
   - PLATFORMIO_CI_SRC=examples/Single_Shot/Single_Shot.ino
+  - PLATFORMIO_CI_SRC=examples/Continous/Continous.ino
+  - PLATFORMIO_CI_SRC=examples/Alert_Window_Mode/Alert_Window_Mode.ino
 
 install:
   - pip install -U platformio pip setuptools
   - platformio update
 
 script:
-  - platformio ci --board=esp-wrover-kit
+  - platformio ci --lib="." --board=uno --board=esp-wrover-kit
