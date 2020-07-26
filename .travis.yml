@@ -38,4 +38,4 @@ install:
   - platformio update
 
 script:
-  - platformio ci --board=esp-wrover-kit
+  - platformio ci --library="." --board=esp-wrover-kit
