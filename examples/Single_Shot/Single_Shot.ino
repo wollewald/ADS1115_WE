@@ -13,7 +13,7 @@
 #define I2C_ADDRESS 0x48
 
 ADS1115_WE adc(I2C_ADDRESS);
-// ADS1115_WE adc = ADS1115_WE(); // Alternative: sets default address 0x48
+// ADS1115_WE adc = ADS1115_WE(); // Alternative: uses default address 0x48
 
 void setup() {
   Wire.begin();
