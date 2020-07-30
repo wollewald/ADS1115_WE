@@ -32,7 +32,7 @@ cache:
 
 env:
   - PLATFORMIO_CI_SRC=examples/Single_Shot/Single_Shot.ino
-  - PLATFORMIO_CI_SRC=examples/Continous/Continous.ino
+  - PLATFORMIO_CI_SRC=examples/Continuous/Continuous.ino
   - PLATFORMIO_CI_SRC=examples/Alert_Window_Mode/Alert_Window_Mode.ino
 
 install:

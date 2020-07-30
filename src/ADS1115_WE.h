@@ -70,8 +70,9 @@ typedef enum ADS1115_CONV_RATE{
 } convRate;
 
 typedef enum ADS1115_MEASURE_MODE{
-	ADS1115_CONTINOUS = 0x0000,
-	ADS1115_SINGLE    = 0x0100
+	ADS1115_CONTINOUS  = 0x0000, // keeping misspelled enum for backwards compatibility.
+	ADS1115_CONTINUOUS = 0x0000, 
+	ADS1115_SINGLE     = 0x0100
 } measureMode;
 
 typedef enum ADS1115_RANGE{
@@ -139,7 +140,7 @@ public:
     */
 	void setAlertPol(ADS1115_ALERT_POL polarity);
 
-	/* Choose maximum limit or maxium and minimum alert limit (window)in Volt - alert pin will
+	/* Choose maximum limit or maximum and minimum alert limit (window)in Volt - alert pin will
      * be active when measured values are beyond the maximum limit or outside the window
      * Upper limit first: setAlertLimit_V(MODE, maximum, minimum)
      * In max limit mode the minimum value is the limit where the alert pin will be deactivated (if
@@ -164,9 +165,9 @@ public:
     */
 	void setConvRate(ADS1115_CONV_RATE rate);
 
-	/* Set continous or single shot mode:
+	/* Set continuous or single shot mode:
      *
-     * ADS1115_CONTINOUS  ->  continous mode
+     * ADS1115_CONTINUOUS  ->  continuous mode
      * ADS1115_SINGLE     ->  single shot mode (default)
     */
 	void setMeasureMode(ADS1115_MEASURE_MODE mode);
