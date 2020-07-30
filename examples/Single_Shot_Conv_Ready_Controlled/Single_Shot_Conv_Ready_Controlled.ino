@@ -2,7 +2,7 @@
 * Example sketch for the ADS1115_WE library
 *
 * This sketch shows how you can use the conversion ready bit with the isBusy function.
-* This does not work in the continous mode. 
+* This does not work in the continuous mode. 
 *  
 * Further information can be found on:
 * https://wolles-elektronikkiste.de/ads1115
@@ -72,14 +72,14 @@ void setup() {
    */
   adc.setConvRate(ADS1115_8_SPS); //comment line/change parameter to change SPS
 
-  /* Set continous or single shot mode:
+  /* Set continuous or single shot mode:
    * 
-   *  ADS1115_CONTINOUS  ->  continous mode
+   *  ADS1115_CONTINUOUS  ->  continuous mode
    *  ADS1115_SINGLE     ->  single shot mode (default)
    */
-  //adc.setMeasureMode(ADS1115_CONTINOUS); //continous mode does not work with conversion ready (isBusy)
+  //adc.setMeasureMode(ADS1115_CONTINUOUS); //continuous mode does not work with conversion ready (isBusy)
 
-   /* Choose maximum limit or maxium and minimum alert limit (window)in Volt - alert pin will 
+   /* Choose maximum limit or maximum and minimum alert limit (window)in Volt - alert pin will 
    *  be active when measured values are beyond the maximum limit or outside the window 
    *  Upper limit first: setAlertLimit_V(MODE, maximum, minimum)
    *  In max limit mode the minimum value is the limit where the alert pin will be deactivated (if 
