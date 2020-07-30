@@ -204,7 +204,8 @@ public:
 	float getResult_mV();
 
 	/* With this function the alert pin will be active, when a conversion is ready.
-     * In order to deactivate, use the setAlertLimit_V function
+     * In order to deactivate the conversion ready alert, use 
+     * setAlertPinMode(ADS1115_DISABLE_ALERT) or setAlertModeAndLimit_V() 
     */
 	void setAlertPinToConversionReady();
 	void clearAlert();
