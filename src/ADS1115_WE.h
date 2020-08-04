@@ -27,10 +27,10 @@
 #include <Wire.h>
 
 /* registers */
-#define ADS1115_CONV_REG 		0x00 //Conversion Register
-#define ADS1115_CONFIG_REG    	0x01 //Configuration Register
-#define ADS1115_LO_THRESH_REG   0x02 //Low Threshold Register
-#define ADS1115_HI_THRESH_REG   0x03 //High Threshold Register
+#define ADS1115_CONV_REG		0x00 //Conversion Register
+#define ADS1115_CONFIG_REG		0x01 //Configuration Register
+#define ADS1115_LO_THRESH_REG	0x02 //Low Threshold Register
+#define ADS1115_HI_THRESH_REG	0x03 //High Threshold Register
 
 /* other */
 #define ADS1115_REG_FACTOR 32768
@@ -76,12 +76,12 @@ typedef enum ADS1115_MEASURE_MODE{
 } measureMode;
 
 typedef enum ADS1115_RANGE{
-	ADS1115_RANGE_6144	= 0x0000,
-	ADS1115_RANGE_4096	= 0x0200,
+	ADS1115_RANGE_6144  = 0x0000,
+	ADS1115_RANGE_4096  = 0x0200,
 	ADS1115_RANGE_2048  = 0x0400,
-	ADS1115_RANGE_1024	= 0x0600,
-	ADS1115_RANGE_0512	= 0x0800,
-	ADS1115_RANGE_0256	= 0x0A00,
+	ADS1115_RANGE_1024  = 0x0600,
+	ADS1115_RANGE_0512  = 0x0800,
+	ADS1115_RANGE_0256  = 0x0A00,
 } range;
 
 typedef enum ADS1115_MUX{
@@ -96,7 +96,7 @@ typedef enum ADS1115_MUX{
 } mux;
 
 typedef enum ADS1115_STATUS_OR_START{
-	ADS1115_BUSY 		  = 0x0000,
+	ADS1115_BUSY          = 0x0000,
 	ADS1115_START_ISREADY = 0x8000
 } statusOrStart;
 
@@ -202,10 +202,10 @@ public:
 	void startSingleMeasurement();
 	float getResult_V();
 	float getResult_mV();
+	int16_t getResultWithRange(int16_t min, int16_t max);
 
 	/* With this function the alert pin will be active, when a conversion is ready.
-     * In order to deactivate the conversion ready alert, use 
-     * setAlertPinMode(ADS1115_DISABLE_ALERT) or setAlertModeAndLimit_V() 
+     * In order to deactivate, use the setAlertLimit_V function
     */
 	void setAlertPinToConversionReady();
 	void clearAlert();
