@@ -38,6 +38,9 @@ isBusy	KEYWORD2
 startSingleMeasurement	KEYWORD2
 getResult_V	KEYWORD2
 getResult_mV	KEYWORD2
+getRawResult	KEYWORD2
+getResultWithRange	KEYWORD2
+getVoltageRange_mV	KEYWORD2
 setAlertPinToConversionReady	KEYWORD2
 clearAlert	KEYWORD2
 
