@@ -202,8 +202,37 @@ public:
 	void startSingleMeasurement();
 	float getResult_V();
 	float getResult_mV();
+	
+	/* Get the raw result from the conversion register: 
+	 * The conversion register contains the conversion result of the amplified (!)
+	 * voltage. This means the value depends on the voltage as well as on the 
+	 * voltage range. E.g. if the voltage range is 6.144 mV (ADS1115_RANGE_6144), 
+	 * +32767 is 6.144 mV; if the range is 4.096 mV, +32767 is 4.096 mV, and so on.  
+	*/
+	int16_t getRawResult();
+	
+	/* Skaling of the result to a different range: 
+	 * The results in the conversion register are in a range of -32767 to +32767
+	 * You might want to receive the result in a different scale, e.g. -1023 to 1023.
+	 * For -1023 to 1023, and if you have chosen e.g. ADS1115_RANGE_4096, 0 Volt would 
+	 * give 0 as result and 4.096 mV would give 1023. -4.096 mV would give -1023.
+	*/
 	int16_t getResultWithRange(int16_t min, int16_t max);
-
+	
+	/* Scaling of the result to a different range plus scaling to a voltage range: 
+	 * You can use this variant if you also want to scale to a voltage range. E.g. in
+	 * in order to get results equivalent to an Arduino UNO (10 bit, 5000 mV range), you 
+	 * would choose getResultWithRange(-1023, 1023, 5000). A difference to the Arduino 
+	 * UNO is that you can measure negative voltages. 
+	 * You have to ensure that the voltage range you scale to is smaller than the 
+	 * measuring voltage range. For this example only ADS1115_RANGE_6144 would cover the 
+	 * scale up to 5000 mV. 
+	*/
+	int16_t getResultWithRange(int16_t min, int16_t max, int16_t maxVoltage);
+	
+	/* This function returns the voltage range ADS1115_RANGE_XXXX in Millivolt */
+	uint16_t getVoltageRange_mV();
+	
 	/* With this function the alert pin will be active, when a conversion is ready.
      * In order to deactivate, use the setAlertLimit_V function
     */

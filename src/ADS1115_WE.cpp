@@ -163,14 +163,29 @@ float ADS1115_WE::getResult_mV(){
 	return result;
 }
 
+int16_t ADS1115_WE::getRawResult(){
+	int16_t rawResult = readRegister(ADS1115_CONV_REG);
+	return rawResult;
+}
+
 int16_t ADS1115_WE::getResultWithRange(int16_t min, int16_t max){
 	int16_t rawResult = readRegister(ADS1115_CONV_REG);
-	//rawResult = (int) (rawResult * (voltageRange * 1.0 / 6144));
 	int16_t result = 0;
-	result = map(rawResult, 0, 32767, min, max);
+	result = map(rawResult, -32767, 32767, min, max);
 	return result;
 }
 
+int16_t ADS1115_WE::getResultWithRange(int16_t min, int16_t max, int16_t maxMillivolt){
+	int16_t rawResult = readRegister(ADS1115_CONV_REG);
+	int16_t result = 0;
+	result = map(rawResult, -32767, 32767, min, max);
+	result = (int16_t) (1.0 * result * voltageRange / maxMillivolt);
+	return result;
+}
+
+uint16_t ADS1115_WE::getVoltageRange_mV(){
+	return voltageRange;
+}
 
 void ADS1115_WE::setAlertPinToConversionReady(){
 	writeRegister(ADS1115_LO_THRESH_REG, (0<<15));
