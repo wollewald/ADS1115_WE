@@ -110,69 +110,69 @@ public:
 	void reset();
 	bool init();
 
-    /* Set number of conversions after which the alert pin will be active
-     * - or you can disable the alert
-     *
-     *  ADS1115_ASSERT_AFTER_1  -> after 1 conversion
-     *  ADS1115_ASSERT_AFTER_2  -> after 2 conversions
-     *  ADS1115_ASSERT_AFTER_4  -> after 4 conversions
-     *  ADS1115_DISABLE_ALERT   -> disable comparator // alert pin (default)
-     */
+	/* Set number of conversions after which the alert pin will be active
+	 * - or you can disable the alert
+	 *
+	 *  ADS1115_ASSERT_AFTER_1  -> after 1 conversion
+	 *  ADS1115_ASSERT_AFTER_2  -> after 2 conversions
+	 *  ADS1115_ASSERT_AFTER_4  -> after 4 conversions
+	 *  ADS1115_DISABLE_ALERT   -> disable comparator // alert pin (default)
+	 */
 	void setAlertPinMode(ADS1115_COMP_QUE mode);
 
-    /* Enable or disable latch. If latch is enabled the alarm pin will be active until the
-     * conversion register is read (getResult functions). If disabled the alarm pin will be
-     * deactivated with next value within limits.
-     *
-     * ADS1115_LATCH_DISABLED (default)
-     * ADS1115_LATCH_ENABLED
-     */
+	/* Enable or disable latch. If latch is enabled the alarm pin will be active until the
+	 * conversion register is read (getResult functions). If disabled the alarm pin will be
+	 * deactivated with next value within limits.
+	 *
+	 * ADS1115_LATCH_DISABLED (default)
+	 * ADS1115_LATCH_ENABLED
+	 */
 	void setAlertLatch(ADS1115_LATCH latch);
 
-    /* Sets the alert pin polarity if active:
-     *
-     * Enable or disable latch. If latch is enabled the alarm pin will be active until the
-     * conversion register is read (getResult functions). If disabled the alarm pin will be
-     * deactivated with next value within limits.
-     *
-     * ADS1115_ACT_LOW  ->  active low (default)
-     * ADS1115_ACT_HIGH ->  active high
-     */
+	/* Sets the alert pin polarity if active:
+	 *
+	 * Enable or disable latch. If latch is enabled the alarm pin will be active until the
+	 * conversion register is read (getResult functions). If disabled the alarm pin will be
+	 * deactivated with next value within limits.
+	 *
+	 * ADS1115_ACT_LOW  ->  active low (default)
+	 * ADS1115_ACT_HIGH ->  active high
+	 */
 	void setAlertPol(ADS1115_ALERT_POL polarity);
 
-    /* Choose maximum limit or maximum and minimum alert limit (window)in Volt - alert pin will
-     * be active when measured values are beyond the maximum limit or outside the window
-     * Upper limit first: setAlertLimit_V(MODE, maximum, minimum)
-     * In max limit mode the minimum value is the limit where the alert pin will be deactivated (if
-     * not latched)
-     *
-     * ADS1115_MAX_LIMIT
-     * ADS1115_WINDOW
-     */
+	/* Choose maximum limit or maximum and minimum alert limit (window)in Volt - alert pin will
+	 * be active when measured values are beyond the maximum limit or outside the window
+	 * Upper limit first: setAlertLimit_V(MODE, maximum, minimum)
+	 * In max limit mode the minimum value is the limit where the alert pin will be deactivated (if
+	 * not latched)
+	 *
+	 * ADS1115_MAX_LIMIT
+	 * ADS1115_WINDOW
+	 */
 	void setAlertModeAndLimit_V(ADS1115_COMP_MODE mode, float hithres, float lothres);
 
-    /* Set the conversion rate in SPS (samples per second)
-     * Options should be self-explaining:
-     *
-     * ADS1115_8_SPS
-     * ADS1115_16_SPS
-     * ADS1115_32_SPS
-     * ADS1115_64_SPS
-     * ADS1115_128_SPS (default)
-     * ADS1115_250_SPS
-     * ADS1115_475_SPS
-     * ADS1115_860_SPS
-     */
+	/* Set the conversion rate in SPS (samples per second)
+	 * Options should be self-explaining:
+	 *
+	 * ADS1115_8_SPS
+	 * ADS1115_16_SPS
+	 * ADS1115_32_SPS
+	 * ADS1115_64_SPS
+	 * ADS1115_128_SPS (default)
+	 * ADS1115_250_SPS
+	 * ADS1115_475_SPS
+	 * ADS1115_860_SPS
+	 */
 	void setConvRate(ADS1115_CONV_RATE rate);
 
-    /* Set continuous or single shot mode:
-     *
-     * ADS1115_CONTINUOUS  ->  continuous mode
-     * ADS1115_SINGLE     ->  single shot mode (default)
-     */
+	/* Set continuous or single shot mode:
+	 *
+	 * ADS1115_CONTINUOUS  ->  continuous mode
+	 * ADS1115_SINGLE     ->  single shot mode (default)
+	 */
 	void setMeasureMode(ADS1115_MEASURE_MODE mode);
 
-    /* Set the voltage range of the ADC to adjust the gain:
+	/* Set the voltage range of the ADC to adjust the gain:
 	 * Please note that you must not apply more than VDD + 0.3V to the input pins!
 	 *
 	 * ADS1115_RANGE_6144  ->  +/- 6144 mV
@@ -184,17 +184,17 @@ public:
 	 */
 	void setVoltageRange_mV(ADS1115_RANGE range);
 
-    /* Set the inputs to be compared
-     *
-     * ADS1115_COMP_0_1    ->  compares 0 with 1 (default)
-     * ADS1115_COMP_0_3    ->  compares 0 with 3
-     * ADS1115_COMP_1_3    ->  compares 1 with 3
-     * ADS1115_COMP_2_3    ->  compares 2 with 3
-     * ADS1115_COMP_0_GND  ->  compares 0 with GND
-     * ADS1115_COMP_1_GND  ->  compares 1 with GND
-     * ADS1115_COMP_2_GND  ->  compares 2 with GND
-     * ADS1115_COMP_3_GND  ->  compares 3 with GND
-     */
+	/* Set the inputs to be compared
+	 *
+	 * ADS1115_COMP_0_1    ->  compares 0 with 1 (default)
+	 * ADS1115_COMP_0_3    ->  compares 0 with 3
+	 * ADS1115_COMP_1_3    ->  compares 1 with 3
+	 * ADS1115_COMP_2_3    ->  compares 2 with 3
+	 * ADS1115_COMP_0_GND  ->  compares 0 with GND
+	 * ADS1115_COMP_1_GND  ->  compares 1 with GND
+	 * ADS1115_COMP_2_GND  ->  compares 2 with GND
+	 * ADS1115_COMP_3_GND  ->  compares 3 with GND
+	*/
 	void setCompareChannels(ADS1115_MUX mux);
 
 	bool isBusy();
@@ -202,39 +202,39 @@ public:
 	float getResult_V();
 	float getResult_mV();
 	
-    /* Get the raw result from the conversion register: 
-     * The conversion register contains the conversion result of the amplified (!)
-     * voltage. This means the value depends on the voltage as well as on the 
-     * voltage range. E.g. if the voltage range is 6.144 mV (ADS1115_RANGE_6144), 
-     * +32767 is 6.144 mV; if the range is 4.096 mV, +32767 is 4.096 mV, and so on.  
-     */
+	/* Get the raw result from the conversion register: 
+	 * The conversion register contains the conversion result of the amplified (!)
+	 * voltage. This means the value depends on the voltage as well as on the 
+	 * voltage range. E.g. if the voltage range is 6.144 mV (ADS1115_RANGE_6144), 
+	 * +32767 is 6.144 mV; if the range is 4.096 mV, +32767 is 4.096 mV, and so on.  
+	 */
 	int16_t getRawResult();
 	
-    /* Skaling of the result to a different range: 
-     * The results in the conversion register are in a range of -32767 to +32767
-     * You might want to receive the result in a different scale, e.g. -1023 to 1023.
-     * For -1023 to 1023, and if you have chosen e.g. ADS1115_RANGE_4096, 0 Volt would 
-     * give 0 as result and 4.096 mV would give 1023. -4.096 mV would give -1023.
-     */
+	/* Skaling of the result to a different range: 
+	 * The results in the conversion register are in a range of -32767 to +32767
+	 * You might want to receive the result in a different scale, e.g. -1023 to 1023.
+	 * For -1023 to 1023, and if you have chosen e.g. ADS1115_RANGE_4096, 0 Volt would 
+	 * give 0 as result and 4.096 mV would give 1023. -4.096 mV would give -1023.
+	 */
 	int16_t getResultWithRange(int16_t min, int16_t max);
 	
-    /* Scaling of the result to a different range plus scaling to a voltage range: 
-     * You can use this variant if you also want to scale to a voltage range. E.g. in
-     * in order to get results equivalent to an Arduino UNO (10 bit, 5000 mV range), you 
-     * would choose getResultWithRange(-1023, 1023, 5000). A difference to the Arduino 
-     * UNO is that you can measure negative voltages. 
-     * You have to ensure that the voltage range you scale to is smaller than the 
-     * measuring voltage range. For this example only ADS1115_RANGE_6144 would cover the 
-     * scale up to 5000 mV. 
-     */
+	/* Scaling of the result to a different range plus scaling to a voltage range: 
+	 * You can use this variant if you also want to scale to a voltage range. E.g. in
+	 * in order to get results equivalent to an Arduino UNO (10 bit, 5000 mV range), you 
+	 * would choose getResultWithRange(-1023, 1023, 5000). A difference to the Arduino 
+	 * UNO is that you can measure negative voltages. 
+	 * You have to ensure that the voltage range you scale to is smaller than the 
+	 * measuring voltage range. For this example only ADS1115_RANGE_6144 would cover the 
+	 * scale up to 5000 mV. 
+	 */
 	int16_t getResultWithRange(int16_t min, int16_t max, int16_t maxVoltage);
 	
-    /* This function returns the voltage range ADS1115_RANGE_XXXX in Millivolt */
+	/* This function returns the voltage range ADS1115_RANGE_XXXX in Millivolt */
 	uint16_t getVoltageRange_mV();
 	
-    /* With this function the alert pin will be active, when a conversion is ready.
-     * In order to deactivate, use the setAlertLimit_V function
-     */
+	/* With this function the alert pin will be active, when a conversion is ready.
+	 * In order to deactivate, use the setAlertLimit_V function
+	 */
 	void setAlertPinToConversionReady();
 	void clearAlert();
 
