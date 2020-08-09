@@ -1,7 +1,7 @@
 /***************************************************************************
 * Example sketch for the ADS1115_WE library
 *
-* This sketch shows how to obtain results in different scales / formats.
+* This sketch shows how to obtain results using different scales / formats.
 *  
 * Further information can be found on:
 * https://wolles-elektronikkiste.de/ads1115
