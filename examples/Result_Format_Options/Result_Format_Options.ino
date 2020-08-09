@@ -1,16 +1,15 @@
 /***************************************************************************
 * Example sketch for the ADS1115_WE library
 *
-* This sketch shall show the different options to obtain results in different  
-* skales / formats.
+* This sketch shows how to obtain results using different scales / formats.
 *  
 * Further information can be found on:
 * https://wolles-elektronikkiste.de/ads1115
 * 
 ***************************************************************************/
 
-#include<ADS1115_WE.h> 
-#include<Wire.h>
+#include <ADS1115_WE.h> 
+#include <Wire.h>
 #define I2C_ADDRESS 0x48
 
 ADS1115_WE adc(I2C_ADDRESS);
@@ -33,7 +32,7 @@ void setup() {
 
 void loop() {
   
-  /* Output in Volt or in Millivolt is self-explaining */
+  /* Output in Volt or in Millivolt */
   
   float voltageInMillivolt = adc.getResult_mV(); 
   Serial.print("Result in Millivolt          [mV]: ");
@@ -53,7 +52,7 @@ void loop() {
   Serial.print("Raw Result                       : ");
   Serial.println(rawResult);
 
-  /* Skaling of the result to a different range: 
+  /* Scaling of the result to a different range: 
    * The results in the conversion register are in a range of -32767 to +32767
    * You might want to receive the result in a different scale, e.g. -1023 to 1023.
    * For -1023 to 1023, and if you have chosen e.g. ADS1115_RANGE_4096, 0 Volt would 
