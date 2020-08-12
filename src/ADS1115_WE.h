@@ -27,10 +27,10 @@
 #include <Wire.h>
 
 /* registers */
-#define ADS1115_CONV_REG		0x00 //Conversion Register
-#define ADS1115_CONFIG_REG		0x01 //Configuration Register
-#define ADS1115_LO_THRESH_REG	0x02 //Low Threshold Register
-#define ADS1115_HI_THRESH_REG	0x03 //High Threshold Register
+#define ADS1115_CONV_REG	0x00 // Conversion Register
+#define ADS1115_CONFIG_REG	0x01 // Configuration Register
+#define ADS1115_LO_THRESH_REG	0x02 // Low Threshold Register
+#define ADS1115_HI_THRESH_REG	0x03 // High Threshold Register
 
 /* other */
 #define ADS1115_REG_FACTOR 32768
@@ -210,7 +210,7 @@ public:
 	 */
 	int16_t getRawResult();
 	
-	/* Skaling of the result to a different range: 
+	/* Scaling of the result to a different range: 
 	 * The results in the conversion register are in a range of -32767 to +32767
 	 * You might want to receive the result in a different scale, e.g. -1023 to 1023.
 	 * For -1023 to 1023, and if you have chosen e.g. ADS1115_RANGE_4096, 0 Volt would 
@@ -224,8 +224,7 @@ public:
 	 * would choose getResultWithRange(-1023, 1023, 5000). A difference to the Arduino 
 	 * UNO is that you can measure negative voltages. 
 	 * You have to ensure that the voltage range you scale to is smaller than the 
-	 * measuring voltage range. For this example only ADS1115_RANGE_6144 would cover the 
-	 * scale up to 5000 mV. 
+	 * measuring voltage range.
 	 */
 	int16_t getResultWithRange(int16_t min, int16_t max, int16_t maxVoltage);
 	
