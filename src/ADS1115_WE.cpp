@@ -179,7 +179,7 @@ int16_t ADS1115_WE::getResultWithRange(int16_t min, int16_t max, int16_t maxMill
 	int16_t rawResult = readRegister(ADS1115_CONV_REG);
 	int16_t result = 0;
 	result = map(rawResult, -32767, 32767, min, max);
-	result = (int16_t) ((1.0 * result * voltageRange / maxMillivolt) + 0.999);
+	result = (int16_t) ((1.0 * result * voltageRange / maxMillivolt) + 0.5);
 	return result;
 }
 
