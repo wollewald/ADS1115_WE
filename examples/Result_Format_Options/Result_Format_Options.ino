@@ -58,9 +58,9 @@ void loop() {
    * For -1023 to 1023, and if you have chosen e.g. ADS1115_RANGE_4096, 0 Volt would 
    * give 0 as result and 4.096 mV would give 1023. -4.096 mV would give -1023.
   */
-  int skaledResult = adc.getResultWithRange(-1023, 1023);
-  Serial.print("Skaled result                    : ");
-  Serial.println(skaledResult);
+  int scaledResult = adc.getResultWithRange(-1023, 1023);
+  Serial.print("Scaled result                    : ");
+  Serial.println(scaledResult);
 
   /* Scaling of the result to a different range plus scaling to a voltage range: 
    * You can use this variant if you also want to scale to a voltage range. E.g. in
@@ -71,9 +71,9 @@ void loop() {
    * measuring voltage range. For this example only ADS1115_RANGE_6144 would cover the 
    * scale up to 5000 mV. 
   */
-  int skaledResultWithMaxVoltage = adc.getResultWithRange(-1023, 1023, 5000); 
-  Serial.print("Skaled result with voltage skale : ");
-  Serial.println(skaledResultWithMaxVoltage);
+  int scaledResultWithMaxVoltage = adc.getResultWithRange(-1023, 1023, 5000); 
+  Serial.print("Scaled result with voltage scale : ");
+  Serial.println(scaledResultWithMaxVoltage);
 
   /* This function returns the voltage range ADS1115_RANGE_XXXX in Millivolt */
   unsigned int voltRange = adc.getVoltageRange_mV();
