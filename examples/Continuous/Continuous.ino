@@ -102,10 +102,6 @@ void setup() {
 
   /* Sets the alert pin polarity if active:
    *  
-   * Enable or disable latch. If latch is enabled the alert pin will assert until the
-   * conversion register is read (getResult functions). If disabled the alert pin assertion
-   * will be cleared with next value within limits. 
-   *  
    * ADS1115_ACT_LOW  ->  active low (default)   
    * ADS1115_ACT_HIGH ->  active high
    */
