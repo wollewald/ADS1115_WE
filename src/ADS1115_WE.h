@@ -10,7 +10,8 @@
  * If you find bugs, please inform me!
  *
  * Written by Wolfgang (Wolle) Ewald
- * https://wolles-elektronikkiste.de
+ * https://wolles-elektronikkiste.de/en/ads1115-a-d-converter-with-amplifier (English)
+ * https://wolles-elektronikkiste.de/ads1115 (German)
  *
  *
  ******************************************************************************/
