@@ -3,7 +3,7 @@
 *
 * This sketch shows how you can use the alert pin with the latch function. The 
 * only difference to Alert_Window_Mode.ino is that latch is enabled (line 113) 
-* and that the alert needs to be cleared (line 148). Try and see the difference.
+* and that the alert needs to be cleared (line 144). Try and see the difference.
 * As an alternative to the unlatchAlertPin function you can use getResult_V. 
 * Internally clearAlert just performs a read of the conversion register.
 *  
@@ -113,10 +113,6 @@ void setup() {
   adc.setAlertLatch(ADS1115_LATCH_ENABLED); //uncomment if you want to change the default
 
   /* Sets the alert pin polarity if active:
-   *  
-   * Enable or disable latch. If latch is enabled the alert pin will assert until the
-   * conversion register is read (getResult functions). If disabled the alert pin assertion
-   * will be cleared with next value within limits. 
    *  
    * ADS1115_ACT_LOW  ->  active low (default)   
    * ADS1115_ACT_HIGH ->  active high
