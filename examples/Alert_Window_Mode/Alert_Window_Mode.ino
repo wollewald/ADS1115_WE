@@ -6,7 +6,8 @@
 * mode. You can change the mode with the function setAlertModeAndLimit_V
 *  
 * Further information can be found on:
-* https://wolles-elektronikkiste.de/ads1115
+* https://wolles-elektronikkiste.de/ads1115 (German)
+* https://wolles-elektronikkiste.de/en/ads1115-a-d-converter-with-amplifier (English)
 * 
 ***************************************************************************/
 
@@ -57,7 +58,7 @@ void setup() {
    */
   adc.setCompareChannels(ADS1115_COMP_0_GND); //comment line/change parameter to change range
 
-  /* Set number of conversions out of limit after which the alert pin will be active
+  /* Set number of conversions out of limit after which alert pin asserts
    * - or you can disable the alert (including conversion ready alert)
    *  
    *  ADS1115_ASSERT_AFTER_1  -> after 1 conversion
@@ -88,10 +89,10 @@ void setup() {
    */
   adc.setMeasureMode(ADS1115_CONTINUOUS); //comment or change you want to change to single shot
 
-   /* Choose maximum limit or maximum and minimum alert limit (window)in Volt - alert pin will 
-   *  be active when measured values are beyond the maximum limit or outside the window 
+   /* Choose maximum limit or maximum and minimum alert limit (window) in volts - alert pin will 
+   *  assert when measured values are beyond the maximum limit or outside the window 
    *  Upper limit first: setAlertLimit_V(MODE, maximum, minimum)
-   *  In max limit mode the minimum value is the limit where the alert pin will be deactivated 
+   *  In max limit mode the minimum value is the limit where the alert pin assertion is cleared 
    *  again (if not latched!)  
    * 
    *  ADS1115_MAX_LIMIT
@@ -100,9 +101,9 @@ void setup() {
    */
   adc.setAlertModeAndLimit_V(ADS1115_WINDOW, 3.0, 1.5); //you can change modes / limits
   
-  /* Enable or disable latch. If latch is enabled the alarm pin will be active until the
-   * conversion register is read (getResult functions). If disabled the alarm pin will be
-   * deactivated with next value within limits. 
+  /* Enable or disable latch. If latch is enabled the alert pin will assert until the
+   * conversion register is read (getResult functions). If disabled the alert pin assertion
+   * will be cleared with next value within limits. 
    *  
    *  ADS1115_LATCH_DISABLED (default)
    *  ADS1115_LATCH_ENABLED
@@ -111,16 +112,16 @@ void setup() {
 
   /* Sets the alert pin polarity if active:
    *  
-   * Enable or disable latch. If latch is enabled the alarm pin will be active until the
-   * conversion register is read (getResult functions). If disabled the alarm pin will be
-   * deactivated with next value within limits. 
+   * Enable or disable latch. If latch is enabled the alert pin will assert until the
+   * conversion register is read (getResult functions). If disabled the alert pin assertion 
+   * will be cleared with next value within limits. 
    *  
    * ADS1115_ACT_LOW  ->  active low (default)   
    * ADS1115_ACT_HIGH ->  active high
    */
   //adc.setAlertPol(ADS1115_ACT_LOW); //uncomment if you want to change the default
  
-  /* With this function the alert pin will be active, when a conversion is ready.
+  /* With this function the alert pin will assert, when a conversion is ready.
    * In order to deactivate, use the setAlertLimit_V function  
    */
   //adc.setAlertPinToConversionReady(); //uncomment if you want to change the default
