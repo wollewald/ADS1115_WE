@@ -4,7 +4,8 @@
 * This sketch shows how to obtain results using different scales / formats.
 *  
 * Further information can be found on:
-* https://wolles-elektronikkiste.de/ads1115
+* https://wolles-elektronikkiste.de/ads1115 (German)
+* https://wolles-elektronikkiste.de/en/ads1115-a-d-converter-with-amplifier (English)
 * 
 ***************************************************************************/
 
