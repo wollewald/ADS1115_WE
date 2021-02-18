@@ -77,8 +77,12 @@ void setup() {
    * 
    *  ADS1115_CONTINUOUS  ->  continuous mode
    *  ADS1115_SINGLE     ->  single shot mode (default)
+   *  
+   *  Continuous mode does not work with conversion ready (isBusy), but it works with the 
+   *  conversion ready alert pin. Confusing, but that's a property of the ADS1115 and not 
+   *  a property of the library.
    */
-  //adc.setMeasureMode(ADS1115_CONTINUOUS); //continuous mode does not work with conversion ready (isBusy)
+  // adc.setMeasureMode(ADS1115_CONTINUOUS); // continuous mode does not work with conversion ready (isBusy)
 
    /* Choose maximum limit or maximum and minimum alert limit (window) in volts - alert pin will 
    *  assert when measured values are beyond the maximum limit or outside the window 
