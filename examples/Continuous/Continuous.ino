@@ -113,14 +113,45 @@ void setup() {
   //adc.setAlertPinToConversionReady(); //uncomment if you want to change the default
 
   Serial.println("ADS1115 Example Sketch - Continuous Mode");
+  Serial.println("All values in volts");
   Serial.println();
 }
 
+  /* If you change the compare channels you can immediately read values from the conversion 
+   * register, although they might belong to the former channel if no precautions are taken. 
+   * It takes about the time needed for two conversions to get the correct data. In single 
+   * shot mode you can use the isBusy() function to wait for data from the new channel. This 
+   * does not work in continuous mode. 
+   * To solve this issue the library adds a delay after change of channels if you are in contunuous
+   * mode. The length of the delay is adjusted to the conversion rate. But be aware that the output 
+   * rate will be much lower that the conversion rate if you change channels frequently. 
+   */
+
 void loop() {
   float voltage = 0.0;
-  voltage = adc.getResult_V(); // alternative: getResult_mV for Millivolt
-  Serial.print("Channel 0 vs GND [V]: ");
+
+  Serial.print("0: ");
+  voltage = readChannel(ADS1115_COMP_0_GND);
+  Serial.print(voltage);
+
+  Serial.print(",   1: ");
+  voltage = readChannel(ADS1115_COMP_1_GND);
+  Serial.print(voltage);
+  
+  Serial.print(",   2: ");
+  voltage = readChannel(ADS1115_COMP_2_GND);
+  Serial.print(voltage);
+
+  Serial.print(",   3: ");
+  voltage = readChannel(ADS1115_COMP_3_GND);
   Serial.println(voltage);
-  Serial.println("-------------------------------");
-  delay(2000);
+
+  delay(1000);
+}
+
+float readChannel(ADS1115_MUX channel) {
+  float voltage = 0.0;
+  adc.setCompareChannels(channel);
+  voltage = adc.getResult_V(); // alternative: getResult_mV for Millivolt
+  return voltage;
 }
