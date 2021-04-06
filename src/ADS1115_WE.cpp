@@ -139,8 +139,8 @@ void ADS1115_WE::setVoltageRange_mV(ADS1115_RANGE range){
     currentConfReg &= ~(0x0E00);    
     currentConfReg |= range;
     writeRegister(ADS1115_CONFIG_REG, currentConfReg);
-	convRate rate = getConvRate();
-	delayAccToRate(rate);
+    convRate rate = getConvRate();
+    delayAccToRate(rate);
 }
 
 void ADS1115_WE::setAutoRange(){
@@ -150,7 +150,7 @@ void ADS1115_WE::setAutoRange(){
     if(deviceMeasureMode == ADS1115_SINGLE){
         setMeasureMode(ADS1115_CONTINUOUS);
         convRate rate = getConvRate();
-		delayAccToRate(rate);
+        delayAccToRate(rate);
     }
     
     float result = abs(getResult_mV());
