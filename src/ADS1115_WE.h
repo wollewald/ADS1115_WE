@@ -95,6 +95,7 @@ typedef enum ADS1115_MUX{
     ADS1115_COMP_2_GND = 0x6000,
     ADS1115_COMP_3_GND = 0x7000
 } mux;
+#define ADS1115_COMP_INC 0x1000     // increment to next channel
 
 typedef enum ADS1115_STATUS_OR_START{
     ADS1115_BUSY          = 0x0000,
@@ -212,6 +213,10 @@ public:
      * ADS1115_COMP_3_GND  ->  compares 3 with GND
     */
     void setCompareChannels(ADS1115_MUX mux);
+
+    /* Set to channel (0-3) in single ended mode
+     */
+    void setSingleChannel(size_t channel);
 
     bool isBusy();
     void startSingleMeasurement();
