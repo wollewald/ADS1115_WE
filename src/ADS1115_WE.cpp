@@ -218,7 +218,13 @@ void ADS1115_WE::setCompareChannels(ADS1115_MUX mux){
         delayAccToRate(rate);               
     }       
 }
-    
+
+void ADS1115_WE::setSingleChannel(size_t channel) {
+    if (channel >=  4)
+        return;
+    setCompareChannels((ADS1115_MUX)(ADS1115_COMP_0_GND + ADS1115_COMP_INC*channel));
+}
+
 bool ADS1115_WE::isBusy(){
     uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
     return (!(currentConfReg>>15) & 1);
