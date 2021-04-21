@@ -112,6 +112,13 @@ void setup() {
    */
   //adc.setAlertPinToConversionReady(); //uncomment if you want to change the default
 
+  /* Enable or disable permanent automatic range selection mode. If enabled, the range will
+   * change if the measured values are outside of 30-80% of the maximum value of the current 
+   * range.  
+   * !!! Use EITHER this function once OR setAutoRange() whenever needed (see below) !!!
+   */
+  adc.setPermanentAutoRangeMode(true);
+
   Serial.println("ADS1115 Example Sketch - Continuous Mode with Auto Range");
   Serial.println();
 }
@@ -150,10 +157,11 @@ float readChannel(ADS1115_MUX channel) {
    * would need for three conversions. 
    * If the ADS115 is in single shot mode, setAutoRange() will switch into continuous
    * mode to measure a value and switch back again.
+   * !!! Use EITHER this function whenever needed OR setPermanentAutoRangeMode(true) once !!!
    */
-  adc.setAutoRange();
-  printVoltageRange(); // this is just to show that the range is changing with changing voltages 
+  //adc.setAutoRange();
   adc.getResult_mV();
+  printVoltageRange(); // this is just to show that the range is changing with changing voltages 
   voltage = adc.getResult_V(); // alternative: getResult_mV for Millivolt
   return voltage;
 }
