@@ -200,6 +200,12 @@ public:
      * You should ony use it in case you expect stable or slowly changing voltages. 
      */
     void setAutoRange();
+    
+    /* Set the automatic voltage range permanantly, but the range will only be changed if the 
+     * measured value is outside 30 - 80% of the maximum value of the current range. 
+     * Therefore this method is faster than setAutoRange(). 
+     */
+    void setPermanentAutoRangeMode(bool autoMode);
 
     /* Set the inputs to be compared
      *
@@ -263,6 +269,7 @@ private:
     uint16_t voltageRange;
     ADS1115_MEASURE_MODE deviceMeasureMode;
     int i2cAddress;
+    bool autoRangeMode;
     void delayAccToRate(convRate cr);
     int16_t calcLimit(float rawLimit);
     uint8_t writeRegister(uint8_t reg, uint16_t val);

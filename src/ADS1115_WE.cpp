@@ -41,6 +41,7 @@ bool ADS1115_WE::init(){
     writeRegister(ADS1115_LO_THRESH_REG, 0x8000);
     writeRegister(ADS1115_HI_THRESH_REG, 0x7FFF);
     deviceMeasureMode = ADS1115_SINGLE;
+    autoRangeMode = false;
     return 1;
 }
 
@@ -153,28 +154,38 @@ void ADS1115_WE::setAutoRange(){
         delayAccToRate(rate);
     }
     
-    float result = abs(getResult_mV());
+    int16_t rawResult = abs(readRegister(ADS1115_CONV_REG));
     range optRange = ADS1115_RANGE_6144;
     
-    if(result < 205.0){
+    if(rawResult < 1093){
         optRange = ADS1115_RANGE_0256;
     }
-    else if(result < 410.0){
+    else if(rawResult < 2185){
         optRange = ADS1115_RANGE_0512;
     }
-    else if(result < 820.0){
+    else if(rawResult < 4370){
         optRange = ADS1115_RANGE_1024;
     }
-    else if(result < 1640.0){
+    else if(rawResult < 8738){
         optRange = ADS1115_RANGE_2048;
     }
-    else if(result < 3280.0){
+    else if(rawResult < 17476){
         optRange = ADS1115_RANGE_4096;
     }
     
     writeRegister(ADS1115_CONFIG_REG, currentConfReg);
     setVoltageRange_mV(optRange); 
 }
+
+void ADS1115_WE::setPermanentAutoRangeMode(bool autoMode){
+    if(autoMode){
+        autoRangeMode = true;
+    }
+    else{
+        autoRangeMode = false;
+    }
+}
+        
 
 void ADS1115_WE::delayAccToRate(convRate cr){
     switch(cr){
@@ -237,31 +248,41 @@ void ADS1115_WE::startSingleMeasurement(){
 }
     
 float ADS1115_WE::getResult_V(){
-    int16_t rawResult = readRegister(ADS1115_CONV_REG);
+    int16_t rawResult = getRawResult();
     float result = (rawResult * 1.0 / ADS1115_REG_FACTOR) * voltageRange/1000;
     return result;  
 }
 
 float ADS1115_WE::getResult_mV(){
-    int16_t rawResult = readRegister(ADS1115_CONV_REG);
+    int16_t rawResult = getRawResult();
     float result = (rawResult * 1.0 / ADS1115_REG_FACTOR) * voltageRange;
     return result;
 }
 
 int16_t ADS1115_WE::getRawResult(){
     int16_t rawResult = readRegister(ADS1115_CONV_REG);
+    if(autoRangeMode){
+        if((abs(rawResult) > 26214) && (voltageRange != 6144)){ // 80%
+            setAutoRange();
+            rawResult = readRegister(ADS1115_CONV_REG);
+        }
+        else if((abs(rawResult) < 9800) && (voltageRange != 256)){ //30%
+            setAutoRange();
+            rawResult = readRegister(ADS1115_CONV_REG);
+        }
+    }
     return rawResult;
 }
 
 int16_t ADS1115_WE::getResultWithRange(int16_t min, int16_t max){
-    int16_t rawResult = readRegister(ADS1115_CONV_REG);
+    int16_t rawResult = getRawResult();
     int16_t result = 0;
     result = map(rawResult, -32767, 32767, min, max);
     return result;
 }
 
 int16_t ADS1115_WE::getResultWithRange(int16_t min, int16_t max, int16_t maxMillivolt){
-    int16_t rawResult = readRegister(ADS1115_CONV_REG);
+    int16_t rawResult = getRawResult();
     int16_t result = 0;
     result = map(rawResult, -32767, 32767, min, max);
     result = (int16_t) ((1.0 * result * voltageRange / maxMillivolt) + 0.5);
