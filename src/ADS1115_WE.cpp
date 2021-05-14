@@ -17,22 +17,35 @@
 #include "ADS1115_WE.h"
 
 ADS1115_WE::ADS1115_WE(int addr){
+    _wire = &Wire;
     i2cAddress = addr;
 }
 
 ADS1115_WE::ADS1115_WE(){
+    _wire = &Wire;
     i2cAddress = 0x48;
 }
 
+ADS1115_WE::ADS1115_WE(TwoWire *w, int addr){
+    _wire = w;
+    i2cAddress = addr; 
+}
+
+ADS1115_WE::ADS1115_WE(TwoWire *w){
+    _wire = w;
+    i2cAddress = 0x48;
+}
+
+
 void ADS1115_WE::reset(){
-    Wire.beginTransmission(0);
-    Wire.write(0x06);
-    Wire.endTransmission();
+    _wire->beginTransmission(0);
+    _wire->write(0x06);
+    _wire->endTransmission();
 }
 
 bool ADS1115_WE::init(){    
-    Wire.beginTransmission(i2cAddress);
-    uint8_t success = Wire.endTransmission();
+    _wire->beginTransmission(i2cAddress);
+    uint8_t success = _wire->endTransmission();
     if(success){
         return 0;
     }
@@ -312,25 +325,25 @@ int16_t ADS1115_WE::calcLimit(float rawLimit){
 }
 
 uint8_t ADS1115_WE::writeRegister(uint8_t reg, uint16_t val){
-  Wire.beginTransmission(i2cAddress);
+  _wire->beginTransmission(i2cAddress);
   uint8_t lVal = val & 255;
   uint8_t hVal = val >> 8;
-  Wire.write(reg);
-  Wire.write(hVal);
-  Wire.write(lVal);
-  return Wire.endTransmission();
+  _wire->write(reg);
+  _wire->write(hVal);
+  _wire->write(lVal);
+  return _wire->endTransmission();
 }
   
 uint16_t ADS1115_WE::readRegister(uint8_t reg){
   uint8_t MSByte = 0, LSByte = 0;
   uint16_t regValue = 0;
-  Wire.beginTransmission(i2cAddress);
-  Wire.write(reg);
-  Wire.endTransmission();
-  Wire.requestFrom(i2cAddress,2);
-  if(Wire.available()){
-    MSByte = Wire.read();
-    LSByte = Wire.read();
+  _wire->beginTransmission(i2cAddress);
+  _wire->write(reg);
+  _wire->endTransmission();
+  _wire->requestFrom(i2cAddress,2);
+  if(_wire->available()){
+    MSByte = _wire->read();
+    LSByte = _wire->read();
   }
   regValue = (MSByte<<8) + LSByte;
   return regValue;

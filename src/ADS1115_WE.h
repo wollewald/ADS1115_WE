@@ -108,6 +108,8 @@ class ADS1115_WE
 public:
     ADS1115_WE(int addr);
     ADS1115_WE(); // uses default I2C Address 0x48
+    ADS1115_WE(TwoWire *w, int addr);
+    ADS1115_WE(TwoWire *w);
 
     void reset();
     bool init();
@@ -266,6 +268,7 @@ public:
 
 
 private:
+    TwoWire *_wire;
     uint16_t voltageRange;
     ADS1115_MEASURE_MODE deviceMeasureMode;
     int i2cAddress;
