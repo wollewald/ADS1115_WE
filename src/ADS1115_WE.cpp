@@ -261,8 +261,8 @@ void ADS1115_WE::startSingleMeasurement(){
 }
     
 float ADS1115_WE::getResult_V(){
-    int16_t rawResult = getRawResult();
-    float result = (rawResult * 1.0 / ADS1115_REG_FACTOR) * voltageRange/1000;
+    float result = getResult_mV();
+    result /= 1000;
     return result;  
 }
 
@@ -295,9 +295,7 @@ int16_t ADS1115_WE::getResultWithRange(int16_t min, int16_t max){
 }
 
 int16_t ADS1115_WE::getResultWithRange(int16_t min, int16_t max, int16_t maxMillivolt){
-    int16_t rawResult = getRawResult();
-    int16_t result = 0;
-    result = map(rawResult, -32767, 32767, min, max);
+    int16_t result = getResultWithRange(min, max);
     result = (int16_t) ((1.0 * result * voltageRange / maxMillivolt) + 0.5);
     return result;
 }
