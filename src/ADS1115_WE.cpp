@@ -289,8 +289,7 @@ int16_t ADS1115_WE::getRawResult(){
 
 int16_t ADS1115_WE::getResultWithRange(int16_t min, int16_t max){
     int16_t rawResult = getRawResult();
-    int16_t result = 0;
-    result = map(rawResult, -32767, 32767, min, max);
+    int16_t result = map(rawResult, -32767, 32767, min, max);
     return result;
 }
 
