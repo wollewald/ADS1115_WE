@@ -30,6 +30,6 @@ jobs:
         python -m pip install --upgrade pip setuptools
         pip install --upgrade platformio
     - name: Run PlatformIO
-      run: pio ci --lib="." --board=uno --board=esp-wrover-kit
+      run: pio ci --lib="." --board=uno --board=esp-wrover-kit --board=d1_mini
       env:
         PLATFORMIO_CI_SRC: ${{ matrix.example }}
