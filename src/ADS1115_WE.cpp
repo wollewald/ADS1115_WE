@@ -336,7 +336,7 @@ uint16_t ADS1115_WE::readRegister(uint8_t reg){
   uint16_t regValue = 0;
   _wire->beginTransmission(i2cAddress);
   _wire->write(reg);
-  _wire->endTransmission();
+  _wire->endTransmission(false);
   _wire->requestFrom(i2cAddress,2);
   if(_wire->available()){
     MSByte = _wire->read();
