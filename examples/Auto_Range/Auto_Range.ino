@@ -130,25 +130,23 @@ void setup() {
 }
 
 void loop() {
-  float voltage = 0.0;
-  
   Serial.print("Channel 0 - ");
-  voltage = readChannel(ADS1115_COMP_0_GND);
+  readChannel(ADS1115_COMP_0_GND);
   
   Serial.print("Channel 1 - ");
-  voltage = readChannel(ADS1115_COMP_1_GND);
+  readChannel(ADS1115_COMP_1_GND);
     
   Serial.print("Channel 2 - ");
-  voltage = readChannel(ADS1115_COMP_2_GND);
+  readChannel(ADS1115_COMP_2_GND);
   
   Serial.print("Channel 3 - ");
-  voltage = readChannel(ADS1115_COMP_3_GND);
+  readChannel(ADS1115_COMP_3_GND);
   
   Serial.println("-------------------------------");
   delay(1000);
 }
 
-float readChannel(ADS1115_MUX channel) {
+void readChannel(ADS1115_MUX channel) {
   float voltage = 0.0;
   adc.setCompareChannels(channel);
 
