@@ -134,20 +134,16 @@ void loop() {
   
   Serial.print("Channel 0 - ");
   voltage = readChannel(ADS1115_COMP_0_GND);
-  Serial.println(voltage);
-
+  
   Serial.print("Channel 1 - ");
   voltage = readChannel(ADS1115_COMP_1_GND);
-  Serial.println(voltage);
-  
+    
   Serial.print("Channel 2 - ");
   voltage = readChannel(ADS1115_COMP_2_GND);
-  Serial.println(voltage);
-
+  
   Serial.print("Channel 3 - ");
   voltage = readChannel(ADS1115_COMP_3_GND);
-  Serial.println(voltage);
-
+  
   Serial.println("-------------------------------");
   delay(1000);
 }
@@ -164,12 +160,12 @@ float readChannel(ADS1115_MUX channel) {
    * If the ADS115 is in single shot mode, setAutoRange() will switch into continuous
    * mode to measure a value and switch back again.
    * !!! Use EITHER this function whenever needed OR setPermanentAutoRangeMode(true) once !!!
-   */
-  //adc.setAutoRange();
-  adc.getResult_mV();
-  printVoltageRange(); // this is just to show that the range is changing with changing voltages 
+   */  
+  //adc.setAutoRange(); //use either this or setPermanentAutoRangeMode(true)
+  
   voltage = adc.getResult_V(); // alternative: getResult_mV for Millivolt
-  return voltage;
+  printVoltageRange(); // this is just to show that the range is changing with changing voltages 
+  Serial.println(voltage);
 }
   
 void printVoltageRange(){
@@ -178,22 +174,22 @@ void printVoltageRange(){
 
   switch(voltageRange){
     case 6144:
-      Serial.print("+/- 6144 mV, Voltage [mV]: ");
+      Serial.print("+/- 6144 mV, Voltage [V]: ");
       break;
     case 4096:
-      Serial.print("+/- 4096 mV, Voltage [mV]: ");
+      Serial.print("+/- 4096 mV, Voltage [V]: ");
       break;
     case 2048:
-      Serial.print("+/- 2048 mV, Voltage [mV]: ");
+      Serial.print("+/- 2048 mV, Voltage [V]: ");
       break;
     case 1024:
-      Serial.print("+/- 1024 mV, Voltage [mV]: ");
+      Serial.print("+/- 1024 mV, Voltage [V]: ");
       break;
     case 512:
-      Serial.print("+/- 512 mV, Voltage [mV]: ");
+      Serial.print("+/- 512 mV, Voltage [V]: ");
       break;
     case 256:
-      Serial.print("+/- 256 mV, Voltage [mV]: ");
+      Serial.print("+/- 256 mV, Voltage [V]: ");
       break;
     default:
       Serial.println("Something went wrong");
