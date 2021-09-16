@@ -60,28 +60,28 @@ bool ADS1115_WE::init(){
 
 void ADS1115_WE::setAlertPinMode(ADS1115_COMP_QUE mode){
     uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
-    currentConfReg &= ~(0x0003);    
+    currentConfReg &= ~(0x8003);    
     currentConfReg |= mode;
     writeRegister(ADS1115_CONFIG_REG, currentConfReg);
 }
 
 void ADS1115_WE::setAlertLatch(ADS1115_LATCH latch){
     uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
-    currentConfReg &= ~(0x0004);    
+    currentConfReg &= ~(0x8004);    
     currentConfReg |= latch;
     writeRegister(ADS1115_CONFIG_REG, currentConfReg);
 }
 
 void ADS1115_WE::setAlertPol(ADS1115_ALERT_POL polarity){
     uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
-    currentConfReg &= ~(0x0008);    
+    currentConfReg &= ~(0x8008);    
     currentConfReg |= polarity;
     writeRegister(ADS1115_CONFIG_REG, currentConfReg);
 }
 
 void ADS1115_WE::setAlertModeAndLimit_V(ADS1115_COMP_MODE mode, float hiThres, float loThres){
     uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
-    currentConfReg &= ~(0x0010);    
+    currentConfReg &= ~(0x8010);    
     currentConfReg |= mode;
     writeRegister(ADS1115_CONFIG_REG, currentConfReg);
     int16_t alertLimit = calcLimit(hiThres);
@@ -93,7 +93,7 @@ void ADS1115_WE::setAlertModeAndLimit_V(ADS1115_COMP_MODE mode, float hiThres, f
 
 void ADS1115_WE::setConvRate(ADS1115_CONV_RATE rate){
     uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
-    currentConfReg &= ~(0x00E0);    
+    currentConfReg &= ~(0x80E0);    
     currentConfReg |= rate;
     writeRegister(ADS1115_CONFIG_REG, currentConfReg);
 }
@@ -106,7 +106,7 @@ convRate ADS1115_WE::getConvRate(){
 void ADS1115_WE::setMeasureMode(ADS1115_MEASURE_MODE mode){
     uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
     deviceMeasureMode = mode;
-    currentConfReg &= ~(0x0100);    
+    currentConfReg &= ~(0x8100);    
     currentConfReg |= mode;
     writeRegister(ADS1115_CONFIG_REG, currentConfReg);
 }
@@ -150,7 +150,7 @@ void ADS1115_WE::setVoltageRange_mV(ADS1115_RANGE range){
         writeRegister(ADS1115_LO_THRESH_REG, alertLimit);
     }
     
-    currentConfReg &= ~(0x0E00);    
+    currentConfReg &= ~(0x8E00);    
     currentConfReg |= range;
     writeRegister(ADS1115_CONFIG_REG, currentConfReg);
     convRate rate = getConvRate();
@@ -232,7 +232,7 @@ void ADS1115_WE::delayAccToRate(convRate cr){
 
 void ADS1115_WE::setCompareChannels(ADS1115_MUX mux){
     uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
-    currentConfReg &= ~(0x7000);    
+    currentConfReg &= ~(0xF000);    
     currentConfReg |= (mux);
     writeRegister(ADS1115_CONFIG_REG, currentConfReg);
     
