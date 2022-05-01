@@ -12,6 +12,9 @@ https://wolles-elektronikkiste.de/en/ads1115-a-d-converter-with-amplifier (Engli
 
 All features of the ADS1115 are implemented, including alert functions. 
 
+In version 1.4.1 I have implemented the option to use TinyWireM instead of Wire. Therefore the library can be used, for example, on 
+an ATtiny85.
+
 In version 1.3.0 I have added a feature to the continuous mode, which ensures that you can change channels safely without risking that the
 first data read is still from the former channel. If you experienced this issue, you might have solved it with a delay. If this applies to 
 you, you can delete the delays. 
