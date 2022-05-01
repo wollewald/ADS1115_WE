@@ -17,15 +17,20 @@
 #include "ADS1115_WE.h"
 
 ADS1115_WE::ADS1115_WE(int addr){
+#ifndef USE_TINY_WIRE_M_    
     _wire = &Wire;
+#endif
     i2cAddress = addr;
 }
 
 ADS1115_WE::ADS1115_WE(){
+#ifndef USE_TINY_WIRE_M_
     _wire = &Wire;
+#endif
     i2cAddress = 0x48;
 }
 
+#ifndef USE_TINY_WIRE_M_
 ADS1115_WE::ADS1115_WE(TwoWire *w, int addr){
     _wire = w;
     i2cAddress = addr; 
@@ -35,17 +40,29 @@ ADS1115_WE::ADS1115_WE(TwoWire *w){
     _wire = w;
     i2cAddress = 0x48;
 }
+#endif
 
 
 void ADS1115_WE::reset(){
+#ifndef USE_TINY_WIRE_M_  
     _wire->beginTransmission(0);
     _wire->write(0x06);
     _wire->endTransmission();
+#else
+    TinyWireM.beginTransmission(0);
+    TinyWireM.send(0x06);
+    TinyWireM.endTransmission();
+#endif
 }
 
 bool ADS1115_WE::init(){    
+#ifndef USE_TINY_WIRE_M_
     _wire->beginTransmission(i2cAddress);
     uint8_t success = _wire->endTransmission();
+#else
+    TinyWireM.beginTransmission(i2cAddress);
+    uint8_t success = TinyWireM.endTransmission();
+#endif
     if(success){
         return 0;
     }
@@ -322,28 +339,46 @@ int16_t ADS1115_WE::calcLimit(float rawLimit){
 }
 
 uint8_t ADS1115_WE::writeRegister(uint8_t reg, uint16_t val){
-  _wire->beginTransmission(i2cAddress);
-  uint8_t lVal = val & 255;
-  uint8_t hVal = val >> 8;
-  _wire->write(reg);
-  _wire->write(hVal);
-  _wire->write(lVal);
-  return _wire->endTransmission();
+    uint8_t lVal = val & 255;
+    uint8_t hVal = val >> 8;
+#ifndef USE_TINY_WIRE_M_  
+    _wire->beginTransmission(i2cAddress);
+    _wire->write(reg);
+    _wire->write(hVal);
+    _wire->write(lVal);
+    return _wire->endTransmission();
+#else
+    TinyWireM.beginTransmission(i2cAddress);
+    TinyWireM.send(reg);
+    TinyWireM.send(hVal);
+    TinyWireM.send(lVal);
+    return TinyWireM.endTransmission();
+#endif
+  
 }
   
 uint16_t ADS1115_WE::readRegister(uint8_t reg){
-  uint8_t MSByte = 0, LSByte = 0;
-  uint16_t regValue = 0;
-  _wire->beginTransmission(i2cAddress);
-  _wire->write(reg);
-  _wire->endTransmission(false);
-  _wire->requestFrom(i2cAddress,2);
-  if(_wire->available()){
-    MSByte = _wire->read();
-    LSByte = _wire->read();
-  }
-  regValue = (MSByte<<8) + LSByte;
-  return regValue;
+    uint8_t MSByte = 0, LSByte = 0;
+    uint16_t regValue = 0;
+#ifndef USE_TINY_WIRE_M_    
+    _wire->beginTransmission(i2cAddress);
+    _wire->write(reg);
+    _wire->endTransmission(false);
+    _wire->requestFrom(i2cAddress,2);
+    if(_wire->available()){
+        MSByte = _wire->read();
+        LSByte = _wire->read();
+    }
+#else
+    TinyWireM.beginTransmission(i2cAddress);
+    TinyWireM.send(reg);
+    TinyWireM.endTransmission();
+    TinyWireM.requestFrom(i2cAddress,2);
+    MSByte = TinyWireM.receive();
+    LSByte = TinyWireM.receive();
+#endif
+    regValue = (MSByte<<8) + LSByte;
+    return regValue;
 }
     
 

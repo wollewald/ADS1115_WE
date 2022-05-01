@@ -24,8 +24,14 @@
 #else
  #include "WProgram.h"
 #endif
+#include "ADS1115_config.h"
 
-#include <Wire.h>
+#ifdef USE_TINY_WIRE_M_
+ #include <TinyWireM.h>
+#endif
+#ifndef USE_TINY_WIRE_M_
+ #include <Wire.h>
+#endif
 
 /* registers */
 #define ADS1115_CONV_REG    0x00 // Conversion Register
@@ -108,8 +114,10 @@ class ADS1115_WE
 public:
     ADS1115_WE(int addr);
     ADS1115_WE(); // uses default I2C Address 0x48
+#ifndef USE_TINY_WIRE_M_    
     ADS1115_WE(TwoWire *w, int addr);
     ADS1115_WE(TwoWire *w);
+#endif
 
     void reset();
     bool init();
@@ -268,7 +276,9 @@ public:
 
 
 private:
+#ifndef USE_TINY_WIRE_M_    
     TwoWire *_wire;
+#endif
     uint16_t voltageRange;
     ADS1115_MEASURE_MODE deviceMeasureMode;
     int i2cAddress;
