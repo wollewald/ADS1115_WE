@@ -112,11 +112,9 @@ typedef enum ADS1115_STATUS_OR_START{
 class ADS1115_WE
 {
 public:
-    ADS1115_WE(int addr);
-    ADS1115_WE(); // uses default I2C Address 0x48
+    ADS1115_WE(int addr = 0x48);
 #ifndef USE_TINY_WIRE_M_    
-    ADS1115_WE(TwoWire *w, int addr);
-    ADS1115_WE(TwoWire *w);
+    ADS1115_WE(TwoWire *w, int addr = 0x48);
 #endif
 
     void reset();

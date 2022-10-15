@@ -23,22 +23,10 @@ ADS1115_WE::ADS1115_WE(int addr){
     i2cAddress = addr;
 }
 
-ADS1115_WE::ADS1115_WE(){
-#ifndef USE_TINY_WIRE_M_
-    _wire = &Wire;
-#endif
-    i2cAddress = 0x48;
-}
-
 #ifndef USE_TINY_WIRE_M_
 ADS1115_WE::ADS1115_WE(TwoWire *w, int addr){
     _wire = w;
     i2cAddress = addr; 
-}
-
-ADS1115_WE::ADS1115_WE(TwoWire *w){
-    _wire = w;
-    i2cAddress = 0x48;
 }
 #endif
 
