@@ -16,21 +16,6 @@
 
 #include "ADS1115_WE.h"
 
-ADS1115_WE::ADS1115_WE(int addr){
-#ifndef USE_TINY_WIRE_M_    
-    _wire = &Wire;
-#endif
-    i2cAddress = addr;
-}
-
-#ifndef USE_TINY_WIRE_M_
-ADS1115_WE::ADS1115_WE(TwoWire *w, int addr){
-    _wire = w;
-    i2cAddress = addr; 
-}
-#endif
-
-
 void ADS1115_WE::reset(){
 #ifndef USE_TINY_WIRE_M_  
     _wire->beginTransmission(0);
@@ -204,7 +189,6 @@ void ADS1115_WE::setPermanentAutoRangeMode(bool autoMode){
     }
 }
         
-
 void ADS1115_WE::delayAccToRate(convRate cr){
     switch(cr){
         case ADS1115_8_SPS:
@@ -300,7 +284,7 @@ int16_t ADS1115_WE::getResultWithRange(int16_t min, int16_t max){
 
 int16_t ADS1115_WE::getResultWithRange(int16_t min, int16_t max, int16_t maxMillivolt){
     int16_t result = getResultWithRange(min, max);
-    result = (int16_t) ((1.0 * result * voltageRange / maxMillivolt) + 0.5);
+    result = static_cast<int16_t>((1.0 * result * voltageRange / maxMillivolt) + 0.5);
     return result;
 }
 
@@ -322,7 +306,7 @@ void ADS1115_WE::clearAlert(){
 *************************************************/
 
 int16_t ADS1115_WE::calcLimit(float rawLimit){
-    int16_t limit = (int16_t)((rawLimit * ADS1115_REG_FACTOR / voltageRange)*1000);
+    int16_t limit = static_cast<int16_t>((rawLimit * ADS1115_REG_FACTOR / voltageRange)*1000);
     return limit;
 }
 
@@ -352,7 +336,7 @@ uint16_t ADS1115_WE::readRegister(uint8_t reg){
     _wire->beginTransmission(i2cAddress);
     _wire->write(reg);
     _wire->endTransmission(false);
-    _wire->requestFrom(i2cAddress,2);
+    _wire->requestFrom(i2cAddress,static_cast<uint8_t>(2));
     if(_wire->available()){
         MSByte = _wire->read();
         LSByte = _wire->read();
@@ -361,13 +345,10 @@ uint16_t ADS1115_WE::readRegister(uint8_t reg){
     TinyWireM.beginTransmission(i2cAddress);
     TinyWireM.send(reg);
     TinyWireM.endTransmission();
-    TinyWireM.requestFrom(i2cAddress,2);
+    TinyWireM.requestFrom(i2cAddress,static_cast<uint8_t>(2));
     MSByte = TinyWireM.receive();
     LSByte = TinyWireM.receive();
 #endif
     regValue = (MSByte<<8) + LSByte;
     return regValue;
 }
-    
-
-
