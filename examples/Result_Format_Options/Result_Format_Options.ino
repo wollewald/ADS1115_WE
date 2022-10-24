@@ -14,11 +14,10 @@
 #define I2C_ADDRESS 0x48
 
 /* There are several ways to create your ADS1115_WE object:
- * ADS1115_WE adc = ADS1115_WE()             -> uses Wire / I2C Address = 0x48
- * ADS1115_WE adc = ADS1115_WE(I2C_ADDRESS)  -> uses Wire / I2C_ADDRESS
- * ADS1115_WE adc = ADS1115_WE(&wire2)       -> uses the TwoWire object wire2 / I2C_ADDRESS
- * ADS1115_WE adc = ADS1115_WE(&wire2, I2C_ADDRESS) -> all together
- * Successfully tested with two I2C busses on an ESP32
+ * ADS1115_WE adc = ADS1115_WE(); -> uses Wire / I2C Address = 0x48
+ * ADS1115_WE adc = ADS1115_WE(I2C_ADDRESS); -> uses Wire / I2C_ADDRESS
+ * ADS1115_WE adc = ADS1115_WE(&Wire); -> you can pass any TwoWire object / I2C Address = 0x48
+ * ADS1115_WE adc = ADS1115_WE(&Wire, I2C_ADDRESS); -> all together
  */
 ADS1115_WE adc = ADS1115_WE(I2C_ADDRESS);
 
