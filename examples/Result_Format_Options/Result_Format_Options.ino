@@ -52,15 +52,16 @@ void loop() {
   /* Get the raw result from the conversion register. The conversion register 
    * contains the conversion result of the amplified (!) voltage. This means the
    * value depends on the voltage as well as on the voltage range. E.g. if the 
-   * voltage range is 6144 mV (ADS1115_RANGE_6144), +32767 is 6144 mV; if the 
-   * range is 4096 mV, +32767 is 4096 mV, and so on.  
+   * voltage range is 6144 mV (ADS1115_RANGE_6144), +32768 is 6144 mV; if the 
+   * range is 4096 mV, +32768 is 4096 mV, and so on. To be exact: +32768 would    
+   * the range value, but the register max.value is 32767.    
   */
   int rawResult = adc.getRawResult();
   Serial.print("Raw Result                       : ");
   Serial.println(rawResult);
 
   /* Scaling of the result to a different range: 
-   * The results in the conversion register are in a range of -32767 to +32767
+   * The results in the conversion register are in a range of -32768 to +32767
    * You might want to receive the result in a different scale, e.g. -1023 to 1023.
    * For -1023 to 1023, and if you have chosen e.g. ADS1115_RANGE_4096, 0 Volt would 
    * give 0 as result and 4096 mV would give 1023. -4096 mV would give -1023.
