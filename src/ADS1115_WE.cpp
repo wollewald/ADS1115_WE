@@ -158,21 +158,27 @@ void ADS1115_WE::setAutoRange(){
     }
     
     int16_t rawResult = abs(readRegister(ADS1115_CONV_REG));
+    int16_t rawResultCopy = rawResult;
+        if(rawResultCopy == -32768){
+            rawResultCopy++; 
+        }
+        rawResultCopy = abs(rawResultCopy);
+    
     range optRange = ADS1115_RANGE_6144;
     
-    if(rawResult < 1093){
+    if(rawResultCopy < 1093){
         optRange = ADS1115_RANGE_0256;
     }
-    else if(rawResult < 2185){
+    else if(rawResultCopy < 2185){
         optRange = ADS1115_RANGE_0512;
     }
-    else if(rawResult < 4370){
+    else if(rawResultCopy < 4370){
         optRange = ADS1115_RANGE_1024;
     }
-    else if(rawResult < 8738){
+    else if(rawResultCopy < 8738){
         optRange = ADS1115_RANGE_2048;
     }
-    else if(rawResult < 17476){
+    else if(rawResultCopy < 17476){
         optRange = ADS1115_RANGE_4096;
     }
     
@@ -218,7 +224,6 @@ void ADS1115_WE::delayAccToRate(convRate cr){
     }
 }
     
-
 void ADS1115_WE::setCompareChannels(ADS1115_MUX mux){
     uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
     currentConfReg &= ~(0xF000);    
@@ -264,11 +269,16 @@ float ADS1115_WE::getResult_mV(){
 int16_t ADS1115_WE::getRawResult(){
     int16_t rawResult = readRegister(ADS1115_CONV_REG);
     if(autoRangeMode){
-        if((abs(rawResult) > 26214) && (voltageRange != 6144)){ // 80%
+        int16_t rawResultCopy = rawResult;
+        if(rawResultCopy == -32768){
+            rawResultCopy++; 
+        }
+        rawResultCopy = abs(rawResultCopy);
+        if((rawResultCopy > 26214) && (voltageRange != 6144)){ // 80%
             setAutoRange();
             rawResult = readRegister(ADS1115_CONV_REG);
         }
-        else if((abs(rawResult) < 9800) && (voltageRange != 256)){ //30%
+        else if((rawResultCopy < 9800) && (voltageRange != 256)){ //30%
             setAutoRange();
             rawResult = readRegister(ADS1115_CONV_REG);
         }
@@ -278,7 +288,7 @@ int16_t ADS1115_WE::getRawResult(){
 
 int16_t ADS1115_WE::getResultWithRange(int16_t min, int16_t max){
     int16_t rawResult = getRawResult();
-    int16_t result = map(rawResult, -32768, 32768, min, max);
+    int16_t result = map(rawResult, -32768, 32767, min, max);
     return result;
 }
 
