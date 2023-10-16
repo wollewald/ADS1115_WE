@@ -36,6 +36,7 @@ setMeasureMode	KEYWORD2
 setVoltageRange_mV	KEYWORD2
 setAutoRange	KEYWORD2
 setCompareChannels	KEYWORD2
+setCompareChannels_nonblock	KEYWORD2
 isBusy	KEYWORD2
 startSingleMeasurement	KEYWORD2
 getResult_V	KEYWORD2

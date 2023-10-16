@@ -237,6 +237,13 @@ void ADS1115_WE::setCompareChannels(ADS1115_MUX mux){
     }       
 }
 
+void ADS1115_WE::setCompareChannels_nonblock(ADS1115_MUX mux){
+    uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
+    currentConfReg &= ~(0xF000);    
+    currentConfReg |= (mux);
+    writeRegister(ADS1115_CONFIG_REG, currentConfReg);
+}
+
 void ADS1115_WE::setSingleChannel(size_t channel) {
     if (channel >=  4)
         return;

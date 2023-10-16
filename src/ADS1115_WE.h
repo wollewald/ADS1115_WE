@@ -230,6 +230,10 @@ class ADS1115_WE
         */
         void setCompareChannels(ADS1115_MUX mux);
 
+        /* Set to channel (0-3) in single ended mode in a non blocking way without delay
+         */
+        void setCompareChannels_nonblock(ADS1115_MUX mux);
+
         /* Set to channel (0-3) in single ended mode
          */
         void setSingleChannel(size_t channel);
