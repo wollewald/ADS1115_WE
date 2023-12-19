@@ -29,6 +29,7 @@ If you like the library it would be cool if you can give it a star. If you find 
 There are ADS1115 modules which use ADS1015 ICs and also there are ADS1015 modules which are based on ADS1115 ICs. In theory you should 
 recognize the IC by its label which is "BRPI" for the ADS1015 and "BOGI" for the ADS1115. But I have even found ADS1115 ICs labeled with 
 "BRPI" which is definitely a fake. The difference between the ADS1115 and the ADS1015 is a) the 16-bit vs. 12-bit resolution an b) the speed. 
+
 If you want to find out what you really have on on your module, then try the example sketch "Who_Am_I.ino". Do not change anything apart from
 the I2C address if necessary.
 
