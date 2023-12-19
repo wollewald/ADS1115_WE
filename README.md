@@ -12,15 +12,16 @@ https://wolles-elektronikkiste.de/en/ads1115-a-d-converter-with-amplifier (Engli
 
 All features of the ADS1115 and ADS1015 are implemented, including alert functions. 
 
+The examples are written for the ADS1115 with one exception, which is Continuous_ADS1015.ino. This shows how to "translate" the sketches 
+for the ADS1015. Most enum values like ADS1115_RANGE_6144 and ADS1015_RANGE_6144 are even identical. The exceptions are the enum values for 
+the conversion rate.
+
 In version 1.4.1 I have implemented the option to use TinyWireM instead of Wire. Therefore the library can be used, for example, on 
 an ATtiny85.
 
 Since version 1.3.0 I have added a feature to the continuous mode, which ensures that you can change channels safely without risking that the
 first data read is still from the former channel. If you experienced this issue, you might have solved it with a delay. If this applies to 
 you, you can delete the delays. 
-
-It seems there are modules out there which do not have the full 16 bit resolution. It's not an issue of this library:
-https://github.com/wollewald/ADS1115_WE/issues/15
 
 If you like the library it would be cool if you can give it a star. If you find bugs, please inform me. 
 
