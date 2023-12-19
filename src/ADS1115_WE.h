@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * This is a library for the ADS1115 A/D Converter
+ * This is a library for the ADS1115 and ADS1015 A/D Converter
  *
  * You'll find several example sketches which should enable you to use the library.
  *
@@ -37,39 +37,58 @@ typedef enum ADS1115_COMP_QUE {
     ADS1115_ASSERT_AFTER_1 = 0x0000,
     ADS1115_ASSERT_AFTER_2 = 0x0001,
     ADS1115_ASSERT_AFTER_4 = 0x0002,
-    ADS1115_DISABLE_ALERT  = 0x0003
+    ADS1115_DISABLE_ALERT  = 0x0003,
+    ADS1015_ASSERT_AFTER_1 = ADS1115_ASSERT_AFTER_1,
+    ADS1015_ASSERT_AFTER_2 = ADS1115_ASSERT_AFTER_2,
+    ADS1015_ASSERT_AFTER_4 = ADS1115_ASSERT_AFTER_4,
+    ADS1015_DISABLE_ALERT  = ADS1115_DISABLE_ALERT
 } compQue;
 
 typedef enum ADS1115_LATCH {
     ADS1115_LATCH_DISABLED = 0x0000,
     ADS1115_LATCH_ENABLED  = 0x0004,
+    ADS1015_LATCH_DISABLED = ADS1115_LATCH_DISABLED,
+    ADS1015_LATCH_ENABLED  = ADS1115_LATCH_ENABLED
 } latch;
 
 typedef enum ADS1115_ALERT_POL {
     ADS1115_ACT_LOW  = 0x0000,
-    ADS1115_ACT_HIGH = 0x0008
+    ADS1115_ACT_HIGH = 0x0008,
+    ADS1015_ACT_LOW  = ADS1115_ACT_LOW,
+    ADS1015_ACT_HIGH = ADS1115_ACT_HIGH
 } alertPol;
 
 typedef enum ADS1115_COMP_MODE{
     ADS1115_MAX_LIMIT = 0x0000,
-    ADS1115_WINDOW    = 0x0010
+    ADS1115_WINDOW    = 0x0010,
+    ADS1015_MAX_LIMIT = ADS1115_MAX_LIMIT,
+    ADS1015_WINDOW    = ADS1115_WINDOW
 } compMode;
 
 typedef enum ADS1115_CONV_RATE{
-    ADS1115_8_SPS   = 0x0000,
-    ADS1115_16_SPS  = 0x0020,
-    ADS1115_32_SPS  = 0x0040,
-    ADS1115_64_SPS  = 0x0060,
-    ADS1115_128_SPS = 0x0080,
-    ADS1115_250_SPS = 0x00A0,
-    ADS1115_475_SPS = 0x00C0,
-    ADS1115_860_SPS = 0x00E0
+    ADS1115_8_SPS    = 0x0000,
+    ADS1115_16_SPS   = 0x0020,
+    ADS1115_32_SPS   = 0x0040,
+    ADS1115_64_SPS   = 0x0060,
+    ADS1115_128_SPS  = 0x0080,
+    ADS1115_250_SPS  = 0x00A0,
+    ADS1115_475_SPS  = 0x00C0,
+    ADS1115_860_SPS  = 0x00E0,
+    ADS1015_128_SPS  = ADS1115_8_SPS,
+    ADS1015_250_SPS  = ADS1115_16_SPS,
+    ADS1015_490_SPS  = ADS1115_32_SPS,
+    ADS1015_920_SPS  = ADS1115_64_SPS,
+    ADS1015_1600_SPS = ADS1115_128_SPS,
+    ADS1015_2400_SPS = ADS1115_250_SPS,
+    ADS1015_3300_SPS = ADS1115_475_SPS,
+    ADS1015_3300_SPS_2 = ADS1115_860_SPS
 } convRate;
 
 typedef enum ADS1115_MEASURE_MODE{
-    ADS1115_CONTINOUS  = 0x0000, // keeping misspelled enum for backwards compatibility.
     ADS1115_CONTINUOUS = 0x0000, 
-    ADS1115_SINGLE     = 0x0100
+    ADS1115_SINGLE     = 0x0100,
+    ADS1015_CONTINUOUS = ADS1115_CONTINUOUS,
+    ADS1015_SINGLE     = ADS1115_SINGLE 
 } measureMode;
 
 typedef enum ADS1115_RANGE{
@@ -79,6 +98,12 @@ typedef enum ADS1115_RANGE{
     ADS1115_RANGE_1024  = 0x0600,
     ADS1115_RANGE_0512  = 0x0800,
     ADS1115_RANGE_0256  = 0x0A00,
+    ADS1015_RANGE_6144  = ADS1115_RANGE_6144,
+    ADS1015_RANGE_4096  = ADS1115_RANGE_4096,
+    ADS1015_RANGE_2048  = ADS1115_RANGE_2048,
+    ADS1015_RANGE_1024  = ADS1115_RANGE_1024,
+    ADS1015_RANGE_0512  = ADS1115_RANGE_0512,
+    ADS1015_RANGE_0256  = ADS1115_RANGE_0256
 } range;
 
 typedef enum ADS1115_MUX{
@@ -89,13 +114,25 @@ typedef enum ADS1115_MUX{
     ADS1115_COMP_0_GND = 0x4000,
     ADS1115_COMP_1_GND = 0x5000,
     ADS1115_COMP_2_GND = 0x6000,
-    ADS1115_COMP_3_GND = 0x7000
+    ADS1115_COMP_3_GND = 0x7000,
+    ADS1015_COMP_0_1   = ADS1115_COMP_0_1,
+    ADS1015_COMP_0_3   = ADS1115_COMP_0_3,
+    ADS1015_COMP_1_3   = ADS1115_COMP_1_3,
+    ADS1015_COMP_2_3   = ADS1115_COMP_2_3,
+    ADS1015_COMP_0_GND = ADS1115_COMP_0_GND,
+    ADS1015_COMP_1_GND = ADS1115_COMP_1_GND,
+    ADS1015_COMP_2_GND = ADS1115_COMP_2_GND,
+    ADS1015_COMP_3_GND = ADS1115_COMP_3_GND 
 } mux;
+
 #define ADS1115_COMP_INC 0x1000     // increment to next channel
+#define ADS1015_MUX ADS1115_MUX
 
 typedef enum ADS1115_STATUS_OR_START{
     ADS1115_BUSY          = 0x0000,
-    ADS1115_START_ISREADY = 0x8000
+    ADS1115_START_ISREADY = 0x8000,
+    ADS1015_BUSY          = ADS1115_BUSY,
+    ADS1015_START_ISREADY = ADS1115_START_ISREADY
 } statusOrStart;
 
 
@@ -120,7 +157,7 @@ class ADS1115_WE
 #endif   
 
         void reset();
-        bool init();
+        bool init(bool ads1015 = false);
 
         /* Set number of conversions after which the alert pin will be active
          * - or you can disable the alert
@@ -283,6 +320,7 @@ class ADS1115_WE
 #ifndef USE_TINY_WIRE_M_    
         TwoWire *_wire;
 #endif
+        bool useADS1015;
         uint16_t voltageRange;
         ADS1115_MEASURE_MODE deviceMeasureMode;
         uint8_t i2cAddress;

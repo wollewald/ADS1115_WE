@@ -1,5 +1,5 @@
 /*****************************************
-* This is a library for the ADS1115 A/D Converter
+* This is a library for the ADS1115 and ADS1015 A/D Converter
 *
 * You'll find an example which should enable you to use the library. 
 *
@@ -28,7 +28,9 @@ void ADS1115_WE::reset(){
 #endif
 }
 
-bool ADS1115_WE::init(){    
+bool ADS1115_WE::init(bool ads1015){
+    useADS1015 = ads1015;
+
 #ifndef USE_TINY_WIRE_M_
     _wire->beginTransmission(i2cAddress);
     uint8_t success = _wire->endTransmission();
@@ -194,35 +196,65 @@ void ADS1115_WE::setPermanentAutoRangeMode(bool autoMode){
         autoRangeMode = false;
     }
 }
-        
+
 void ADS1115_WE::delayAccToRate(convRate cr){
-    switch(cr){
-        case ADS1115_8_SPS:
-            delay(130);
-            break;
-        case ADS1115_16_SPS:
-            delay(65);
-            break;
-        case ADS1115_32_SPS:
-            delay(32);
-            break;
-        case ADS1115_64_SPS:
-            delay(16);
-            break;
-        case ADS1115_128_SPS:
-            delay(8);
-            break;
-        case ADS1115_250_SPS:
-            delay(4);
-            break;
-        case ADS1115_475_SPS:
-            delay(3);
-            break;
-        case ADS1115_860_SPS:
-            delay(2);
-            break;
+    if(!useADS1015){
+        switch(cr){
+            case ADS1115_8_SPS:
+                delay(130);
+                break;
+            case ADS1115_16_SPS:
+                delay(65);
+                break;
+            case ADS1115_32_SPS:
+                delay(32);
+                break;
+            case ADS1115_64_SPS:
+                delay(16);
+                break;
+            case ADS1115_128_SPS:
+                delay(8);
+                break;
+            case ADS1115_250_SPS:
+                delay(4);
+                break;
+            case ADS1115_475_SPS:
+                delay(3);
+                break;
+            case ADS1115_860_SPS:
+                delay(2);
+                break;
+        }
     }
-}
+    else{
+        switch(cr){
+            case ADS1015_128_SPS:
+                delay(8);
+                break;
+            case ADS1015_250_SPS:
+                delay(5);
+                break;
+            case ADS1015_490_SPS:
+                delay(2);
+                break;
+            case ADS1015_920_SPS:
+                delay(1);
+                break;
+            case ADS1015_1600_SPS:
+                delayMicroseconds(675);
+                break;
+            case ADS1015_2400_SPS:
+                delayMicroseconds(450);
+                break;
+            case ADS1015_3300_SPS:
+                delayMicroseconds(330);
+                break;
+            case ADS1015_3300_SPS_2:
+                delayMicroseconds(330);
+                break;
+        }
+    }
+}   
     
 void ADS1115_WE::setCompareChannels(ADS1115_MUX mux){
     uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
@@ -255,11 +287,13 @@ bool ADS1115_WE::isBusy(){
     return (!(currentConfReg>>15) & 1);
 }
     
+
 void ADS1115_WE::startSingleMeasurement(){
     uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
     currentConfReg |= (1 << 15);
     writeRegister(ADS1115_CONFIG_REG, currentConfReg);
 }
+
     
 float ADS1115_WE::getResult_V(){
     float result = getResult_mV();
