@@ -19,11 +19,20 @@ the conversion rate.
 In version 1.4.1 I have implemented the option to use TinyWireM instead of Wire. Therefore the library can be used, for example, on 
 an ATtiny85.
 
-Since version 1.3.0 I have added a feature to the continuous mode, which ensures that you can change channels safely without risking that the
-first data read is still from the former channel. If you experienced this issue, you might have solved it with a delay. If this applies to 
-you, you can delete the delays. 
-
 If you like the library it would be cool if you can give it a star. If you find bugs, please inform me. 
+
+<h2>Some remarks on the continuous mode</h2>
+
+When you change channels in continuous mode using ``setCompareChannels()``, the current conversion will be completed first before the next 
+measurement for the new channel will be started. This means you have to wait the time of two conversions before you can be sure that a measured 
+value of the new channel is available. In contrast to the single shot mode, there is no way to determine when this process is completed. 
+Therefore I added delays according to the rate that you have set. The disadvantage is that changing channels is a blocking process. 
+
+If you don't want blocking code, you can use the function ``setCompareChannels_nonblock()``. But please be aware that you have to ensure yourself
+that the measured value has been obtained from the new channel. 
+
+I recommend using the single shot mode instead, because in this mode you can immediately start a new measurement on the new channel and you can 
+check whether the current conversion is completed with the ``isBusy()`` function. 
 
 <h2>Beware of fake modules</h2>
 
