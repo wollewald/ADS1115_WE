@@ -130,7 +130,7 @@ void loop() {
   float voltage = 0.0;
   for(int i=0; i<32; i++){ // counter is 32, conversion rate is 8 SPS --> 4s
     adc.startSingleMeasurement();
-    while(adc.isBusy()){}
+    while(adc.isBusy()){delay(0);}
   }
   voltage = adc.getResult_V(); // alternative: getResult_mV for Millivolt
   Serial.print("Channel 0 vs GND [V]: ");
