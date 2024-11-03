@@ -148,7 +148,7 @@ float readChannel(ADS1115_MUX channel) {
   float voltage = 0.0;
   adc.setCompareChannels(channel);
   adc.startSingleMeasurement();
-  while(adc.isBusy()){}
+  while(adc.isBusy()){delay(0);}
   voltage = adc.getResult_V(); // alternative: getResult_mV for Millivolt
   return voltage;
 }
