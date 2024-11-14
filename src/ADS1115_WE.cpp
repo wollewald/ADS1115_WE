@@ -285,7 +285,10 @@ void ADS1115_WE::setSingleChannel(size_t channel) {
 
 bool ADS1115_WE::isBusy(){
     uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
-    return (!(currentConfReg>>15) & 1);
+    if(deviceMeasureMode == ADS1115_SINGLE){
+        return (!(currentConfReg>>15) & 1);
+    }
+    else return 0;
 }
     
 
