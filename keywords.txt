@@ -28,6 +28,7 @@ ADS1115_STATUS_OR_START	KEYWORD1
 
 reset	KEYWORD2
 init	KEYWORD2
+isDisconnected	KEYWORD2
 setAlertPinMode	KEYWORD2
 setAlertLatch	KEYWORD2
 setAlertPol	KEYWORD2
