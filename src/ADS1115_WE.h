@@ -158,6 +158,7 @@ class ADS1115_WE
 
         void reset();
         bool init(bool ads1015 = false);
+        uint8_t isDisconnected();
 
         /* Set number of conversions after which the alert pin will be active
          * - or you can disable the alert

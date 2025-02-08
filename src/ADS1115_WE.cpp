@@ -31,14 +31,7 @@ void ADS1115_WE::reset(){
 bool ADS1115_WE::init(bool ads1015){
     useADS1015 = ads1015;
 
-#ifndef USE_TINY_WIRE_M_
-    _wire->beginTransmission(i2cAddress);
-    uint8_t success = _wire->endTransmission();
-#else
-    TinyWireM.beginTransmission(i2cAddress);
-    uint8_t success = TinyWireM.endTransmission();
-#endif
-    if(success){
+    if(isDisconnected()){
         return 0;
     }
     writeRegister(ADS1115_CONFIG_REG, ADS1115_REG_RESET_VAL);
@@ -48,6 +41,17 @@ bool ADS1115_WE::init(bool ads1015){
     deviceMeasureMode = ADS1115_SINGLE;
     autoRangeMode = false;
     return 1;
+}
+
+uint8_t ADS1115_WE::isDisconnected(){
+#ifndef USE_TINY_WIRE_M_
+    _wire->beginTransmission(i2cAddress);
+    uint8_t success = _wire->endTransmission();
+#else
+    TinyWireM.beginTransmission(i2cAddress);
+    uint8_t success = TinyWireM.endTransmission();
+#endif
+    return success;
 }
 
 void ADS1115_WE::setAlertPinMode(ADS1115_COMP_QUE mode){
