@@ -124,12 +124,14 @@ void setup() {
 
   /* If you change the compare channels you can immediately read values from the conversion 
    * register, although they might belong to the former channel if no precautions are taken. 
-   * It takes about the time needed for two conversions to get the correct data. In single 
-   * shot mode you can use the isBusy() function to wait for data from the new channel. This 
-   * does not work in continuous mode. 
+   * It takes up to the time needed for two conversions to get data of the new channel. In single 
+   * shot mode you can use the isBusy() function to wait for fresh data. This does not work in
+   * continuous mode. 
    * To solve this issue the library adds a delay after change of channels if you are in contunuous
    * mode. The length of the delay is adjusted to the conversion rate. But be aware that the output 
    * rate will be much lower that the conversion rate if you change channels frequently. 
+   * If you don't want to block the sketch, use setCompareChannels_nonblock() instead of 
+   * setCompareChannels(). 
    */
 
 void loop() {
@@ -157,6 +159,7 @@ void loop() {
 float readChannel(ADS1115_MUX channel) {
   float voltage = 0.0;
   adc.setCompareChannels(channel);
+  // setCompareChannels_nonblock(channel);
   voltage = adc.getResult_V(); // alternative: getResult_mV for Millivolt
   return voltage;
 }
