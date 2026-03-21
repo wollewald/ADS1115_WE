@@ -154,8 +154,6 @@ void readChannel(ADS1115_MUX channel) {
    * below 80% of the maximum value of the range. The function is only suitable if you 
    * expect stable or slowly changing voltages. setAutoRange needs roughly the time you
    * would need for three conversions. 
-   * If the ADS115 is in single shot mode, setAutoRange() will switch into continuous
-   * mode to measure a value and switch back again.
    * !!! Use EITHER this function whenever needed OR setPermanentAutoRangeMode(true) once !!!
    */  
   //adc.setAutoRange(); //use either this or setPermanentAutoRangeMode(true)
