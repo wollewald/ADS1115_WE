@@ -108,9 +108,10 @@ void ADS1115_WE::setMeasureMode(ADS1115_MEASURE_MODE mode){
 }
 
 void ADS1115_WE::setVoltageRange_mV(ADS1115_RANGE range){
+    ADS1115_MEASURE_MODE currentMeasureMode = deviceMeasureMode;
     uint16_t currentVoltageRange = voltageRange;
     uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
-    uint16_t currentRange = (currentConfReg >> 9) & 7;
+    ADS1115_RANGE currentRange = getRange();
     uint16_t currentAlertPinMode = currentConfReg & 3;
     
     setMeasureMode(ADS1115_SINGLE);
@@ -149,26 +150,25 @@ void ADS1115_WE::setVoltageRange_mV(ADS1115_RANGE range){
     currentConfReg &= ~(0x8E00);    
     currentConfReg |= range;
     writeRegister(ADS1115_CONFIG_REG, currentConfReg);
+    deviceMeasureMode = currentMeasureMode;
     convRate rate = getConvRate();
     delayAccToRate(rate);
 }
 
 void ADS1115_WE::setAutoRange(){
-    uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
     setVoltageRange_mV(ADS1115_RANGE_6144);
     
     if(deviceMeasureMode == ADS1115_SINGLE){
-        setMeasureMode(ADS1115_CONTINUOUS);
-        convRate rate = getConvRate();
-        delayAccToRate(rate);
+        startSingleMeasurement();
+        while(isBusy()){delay(0);}
     }
     
     int16_t rawResult = abs(readRegister(ADS1115_CONV_REG));
     int16_t rawResultCopy = rawResult;
-        if(rawResultCopy == -32768){
-            rawResultCopy++; 
-        }
-        rawResultCopy = abs(rawResultCopy);
+    if(rawResultCopy == -32768){
+        rawResultCopy++; 
+    }
+    rawResultCopy = abs(rawResultCopy);
     
     range optRange = ADS1115_RANGE_6144;
     
@@ -188,8 +188,12 @@ void ADS1115_WE::setAutoRange(){
         optRange = ADS1115_RANGE_4096;
     }
     
-    writeRegister(ADS1115_CONFIG_REG, currentConfReg);
     setVoltageRange_mV(optRange); 
+    
+    if(deviceMeasureMode == ADS1115_SINGLE){
+        startSingleMeasurement();
+        while(isBusy()){delay(0);}
+    } 
 }
 
 void ADS1115_WE::setPermanentAutoRangeMode(bool autoMode){
@@ -349,6 +353,12 @@ int16_t ADS1115_WE::getResultWithRange(int16_t min, int16_t max, int16_t maxMill
 
 uint16_t ADS1115_WE::getVoltageRange_mV(){
     return voltageRange;
+}
+
+ADS1115_RANGE ADS1115_WE::getRange(){
+    uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
+    ADS1115_RANGE currentRange = (ADS1115_RANGE)(currentConfReg & 0x0E00);
+    return currentRange;
 }
 
 void ADS1115_WE::setAlertPinToConversionReady(){

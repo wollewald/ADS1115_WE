@@ -310,6 +310,9 @@ class ADS1115_WE
         /* This function returns the voltage range ADS1115_RANGE_XXXX in Millivolt */
         uint16_t getVoltageRange_mV();
         
+        /* This function returns the range as ADS1115_RANGE */
+        ADS1115_RANGE getRange();
+        
         /* With this function the alert pin will be active, when a conversion is ready.
          * In order to deactivate, use the setAlertLimit_V function
          */
