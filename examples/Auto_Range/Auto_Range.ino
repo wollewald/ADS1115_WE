@@ -23,7 +23,7 @@ ADS1115_WE adc = ADS1115_WE(I2C_ADDRESS);
 
 void setup() {
   Wire.begin();
-  Serial.begin(9600);
+  Serial.begin(115200);
   if(!adc.init()){
     Serial.println("ADS1115 not connected!");
   }
@@ -75,14 +75,14 @@ void setup() {
    *  ADS1115_475_SPS 
    *  ADS1115_860_SPS 
    */
-   adc.setConvRate(ADS1115_64_SPS); //uncomment if you want to change the default
+  adc.setConvRate(ADS1115_64_SPS); //uncomment if you want to change the default
 
   /* Set continuous or single shot mode:
    * 
    *  ADS1115_CONTINUOUS  ->  continuous mode
    *  ADS1115_SINGLE     ->  single shot mode (default)
    */
-  adc.setMeasureMode(ADS1115_CONTINUOUS); //comment line/change parameter to change mode
+  adc.setMeasureMode(ADS1115_SINGLE); // or choose: ADS1115_CONTINUOUS
 
    /* Choose maximum limit or maximum and minimum alert limit (window) in Volt - alert pin will 
    *  assert when measured values are beyond the maximum limit or outside the window 
@@ -118,11 +118,18 @@ void setup() {
   //adc.setAlertPinToConversionReady(); //uncomment if you want to change the default
 
   /* Enable or disable permanent automatic range selection mode. If enabled, the range will
-   * change if the measured values are outside of 30-80% of the maximum value of the current 
-   * range.  
+   * change if the measured raw values are outside of a 40-90% window of the maximum value 
+   * of the current range.  
    * !!! Use EITHER this function once OR setAutoRange() whenever needed (see below) !!!
    */
   adc.setPermanentAutoRangeMode(true);
+  
+  /* Enable or disable that voltage ranges used for the different channels will be saved when
+   * changing the channels and reused when changing back. If the voltage does not vary too much
+   * you can save much time you would need for determination of the optimum range. But still it's
+   * it's being checked whether the results are in the 40%/90% window. If outside, the new optimum 
+   * range will be determined. */
+  adc.setRememberChannelRanges(true);
 
   Serial.println("ADS1115 Example Sketch - Continuous Mode with Auto Range");
   Serial.println();
@@ -140,9 +147,9 @@ void loop() {
   
   Serial.print("Channel 3 - ");
   readChannel(ADS1115_COMP_3_GND);
-  
+
   Serial.println("-------------------------------");
-  delay(1000);
+  delay(3000);
 }
 
 void readChannel(ADS1115_MUX channel) {
@@ -158,6 +165,8 @@ void readChannel(ADS1115_MUX channel) {
    */  
   //adc.setAutoRange(); //use either this or setPermanentAutoRangeMode(true)
   
+  adc.startSingleMeasurement(); // comment out when changing to continuous mode
+  while(adc.isBusy()){delay(0);}  // comment out when changing to continuous mode
   voltage = adc.getResult_V(); // alternative: getResult_mV for Millivolt
   printVoltageRange(); // this is just to show that the range is changing with changing voltages 
   Serial.println(voltage);
