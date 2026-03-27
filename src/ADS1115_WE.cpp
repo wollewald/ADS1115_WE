@@ -38,8 +38,9 @@ bool ADS1115_WE::init(bool ads1015){
     setVoltageRange_mV(ADS1115_RANGE_2048);
     writeRegister(ADS1115_LO_THRESH_REG, 0x8000);
     writeRegister(ADS1115_HI_THRESH_REG, 0x7FFF);
-    deviceMeasureMode = ADS1115_SINGLE;
+    setMeasureMode(ADS1115_SINGLE);
     autoRangeMode = false;
+    rememberChannelRanges = false;
     return 1;
 }
 
@@ -101,14 +102,22 @@ convRate ADS1115_WE::getConvRate(){
     
 void ADS1115_WE::setMeasureMode(ADS1115_MEASURE_MODE mode){
     uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
-    deviceMeasureMode = mode;
     currentConfReg &= ~(0x8100);    
     currentConfReg |= mode;
     writeRegister(ADS1115_CONFIG_REG, currentConfReg);
 }
 
+ADS1115_MEASURE_MODE ADS1115_WE::getMeasureMode(){
+    uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
+    if (currentConfReg & 0x0100) {
+        return ADS1115_SINGLE;
+    }
+    else return ADS1115_CONTINUOUS;
+}
+
+
 void ADS1115_WE::setVoltageRange_mV(ADS1115_RANGE range){
-    ADS1115_MEASURE_MODE currentMeasureMode = deviceMeasureMode;
+    ADS1115_MEASURE_MODE currentMeasureMode = getMeasureMode();
     uint16_t currentVoltageRange = voltageRange;
     uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
     ADS1115_RANGE currentRange = getRange();
@@ -150,47 +159,64 @@ void ADS1115_WE::setVoltageRange_mV(ADS1115_RANGE range){
     currentConfReg &= ~(0x8E00);    
     currentConfReg |= range;
     writeRegister(ADS1115_CONFIG_REG, currentConfReg);
-    deviceMeasureMode = currentMeasureMode;
-    convRate rate = getConvRate();
-    delayAccToRate(rate);
+    setMeasureMode(currentMeasureMode);
+    if (currentMeasureMode == ADS1115_CONTINUOUS){
+        convRate rate = getConvRate();
+        delayAccToRate(rate);
+    }
+}
+
+uint16_t ADS1115_WE::getVoltageRange_mV(){
+    return voltageRange;
+}
+
+ADS1115_RANGE ADS1115_WE::getRange(){
+    uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
+    ADS1115_RANGE currentRange = (ADS1115_RANGE)(currentConfReg & 0x0E00);
+    return currentRange;
 }
 
 void ADS1115_WE::setAutoRange(){
     setVoltageRange_mV(ADS1115_RANGE_6144);
-    
-    if(deviceMeasureMode == ADS1115_SINGLE){
+    ADS1115_MEASURE_MODE currentMeasureMode = getMeasureMode();
+    if(currentMeasureMode == ADS1115_SINGLE){
         startSingleMeasurement();
         while(isBusy()){delay(0);}
     }
-    
-    int16_t rawResult = abs(readRegister(ADS1115_CONV_REG));
-    int16_t rawResultCopy = rawResult;
-    if(rawResultCopy == -32768){
-        rawResultCopy++; 
+    else{ // in continuous mode you need to wait for a new result
+        convRate rate = getConvRate();
+        delayAccToRate(rate);
     }
-    rawResultCopy = abs(rawResultCopy);
+    
+    int16_t rawResult = readRegister(ADS1115_CONV_REG);
+    if(rawResult == -32768){
+        rawResult++; // otherwise abs(rawResult) wouldn't work
+    }
+    rawResult = abs(rawResult);
     
     range optRange = ADS1115_RANGE_6144;
     
-    if(rawResultCopy < 1093){
+    if(rawResult < 1093){
         optRange = ADS1115_RANGE_0256;
     }
-    else if(rawResultCopy < 2185){
+    else if(rawResult < 2185){
         optRange = ADS1115_RANGE_0512;
     }
-    else if(rawResultCopy < 4370){
+    else if(rawResult < 4370){
         optRange = ADS1115_RANGE_1024;
     }
-    else if(rawResultCopy < 8738){
+    else if(rawResult < 8738){
         optRange = ADS1115_RANGE_2048;
     }
-    else if(rawResultCopy < 17476){
+    else if(rawResult < 17476){
         optRange = ADS1115_RANGE_4096;
     }
     
     setVoltageRange_mV(optRange); 
     
-    if(deviceMeasureMode == ADS1115_SINGLE){
+    /* Need a new conversion when returnig to getRawResult. For continuous mode
+       this is managed in setVoltageRange() */
+    if(currentMeasureMode == ADS1115_SINGLE){
         startSingleMeasurement();
         while(isBusy()){delay(0);}
     } 
@@ -203,6 +229,13 @@ void ADS1115_WE::setPermanentAutoRangeMode(bool autoMode){
     else{
         autoRangeMode = false;
     }
+}
+
+void ADS1115_WE::setRememberChannelRanges(bool rcr) {
+    if(rcr){
+        rememberChannelRanges = true;
+    }
+    else rememberChannelRanges = false;
 }
 
 void ADS1115_WE::delayAccToRate(convRate cr){
@@ -266,11 +299,24 @@ void ADS1115_WE::delayAccToRate(convRate cr){
     
 void ADS1115_WE::setCompareChannels(ADS1115_MUX mux){
     uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
+    /* Saving the range of the channel before change of channel */
+    uint8_t currentChannel = (currentConfReg >> 12) & 0x7; // corresponding bits in config reg
+    uint8_t currentRange = (currentConfReg >> 9) & 0x7; // corresponding bits in config reg
+    channelRange[currentChannel] = currentRange;
+    
     currentConfReg &= ~(0xF000);    
     currentConfReg |= (mux);
+    
     writeRegister(ADS1115_CONFIG_REG, currentConfReg);
     
-    if(!(currentConfReg & 0x0100)){  // => if not single shot mode
+    /* Applying the range to the channel that was used lst time */
+    if(rememberChannelRanges){
+        uint8_t newChannel = mux >> 12;
+        ADS1115_RANGE range = static_cast<ADS1115_RANGE>(channelRange[newChannel] << 9);
+        setVoltageRange_mV(range);
+    }   
+       
+    if(!(currentConfReg & 0x0100)){  // => if not single shot mode you need to wait for a new result
         convRate rate = getConvRate();      
         for(int i=0; i<2; i++){ // waiting time for two measurements
             delayAccToRate(rate);
@@ -293,7 +339,7 @@ void ADS1115_WE::setSingleChannel(size_t channel) {
 
 bool ADS1115_WE::isBusy(){
     uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
-    if(deviceMeasureMode == ADS1115_SINGLE){
+    if(currentConfReg & 0x0100) { // if single shot mode
         return (!(currentConfReg>>15) & 1);
     }
     else return 0;
@@ -327,11 +373,11 @@ int16_t ADS1115_WE::getRawResult(){
             rawResultCopy++; 
         }
         rawResultCopy = abs(rawResultCopy);
-        if((rawResultCopy > 26214) && (voltageRange != 6144)){ // 80%
+        if((rawResultCopy > 29491) && (voltageRange != 6144)){ // 90%
             setAutoRange();
             rawResult = readRegister(ADS1115_CONV_REG);
         }
-        else if((rawResultCopy < 9800) && (voltageRange != 256)){ //30%
+        else if((rawResultCopy < 13107) && (voltageRange != 256)){ //40%
             setAutoRange();
             rawResult = readRegister(ADS1115_CONV_REG);
         }
@@ -349,16 +395,6 @@ int16_t ADS1115_WE::getResultWithRange(int16_t min, int16_t max, int16_t maxMill
     int16_t result = getResultWithRange(min, max);
     result = static_cast<int16_t>((1.0 * result * voltageRange / maxMillivolt) + 0.5);
     return result;
-}
-
-uint16_t ADS1115_WE::getVoltageRange_mV(){
-    return voltageRange;
-}
-
-ADS1115_RANGE ADS1115_WE::getRange(){
-    uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
-    ADS1115_RANGE currentRange = (ADS1115_RANGE)(currentConfReg & 0x0E00);
-    return currentRange;
 }
 
 void ADS1115_WE::setAlertPinToConversionReady(){

@@ -225,6 +225,9 @@ class ADS1115_WE
          */
         void setMeasureMode(ADS1115_MEASURE_MODE mode);
         
+        /* This function returns the measure mode (single shot or continuous) */
+        ADS1115_MEASURE_MODE getMeasureMode();
+        
         /* Set the voltage range of the ADC to adjust the gain:
          * Please note that you must not apply more than VDD + 0.3V to the input pins!
          *
@@ -236,6 +239,12 @@ class ADS1115_WE
          * ADS1115_RANGE_0256  ->  +/- 256 mV
          */
         void setVoltageRange_mV(ADS1115_RANGE range);
+        
+        /* This function returns the voltage range ADS1115_RANGE_XXXX in Millivolt */
+        uint16_t getVoltageRange_mV();
+        
+        /* This function returns the range as ADS1115_RANGE */
+        ADS1115_RANGE getRange();
         
         /* Set the voltage range automatically 
          * 1) changes into maximum range and continuous mode
@@ -254,6 +263,13 @@ class ADS1115_WE
          * Therefore this method is faster than setAutoRange(). 
          */
         void setPermanentAutoRangeMode(bool autoMode);
+        
+        /* If you work with the automatic range selection, it makes sense to save the current 
+         * range before changing the channel. If you change back, the former range will be set 
+         * automatically. This will avoid unnecessary measurements to determine the optimum range
+         * repeatedly.
+         */
+        void setRememberChannelRanges(bool rememberChannelRanges);
 
         /* Set the inputs to be compared
          *
@@ -275,6 +291,8 @@ class ADS1115_WE
         /* Set to channel (0-3) in single ended mode
          */
         void setSingleChannel(size_t channel);
+        
+        //void setAllChannelRanges(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t,
 
         bool isBusy();
         void startSingleMeasurement();
@@ -307,12 +325,6 @@ class ADS1115_WE
          */
         int16_t getResultWithRange(int16_t min, int16_t max, int16_t maxVoltage);
         
-        /* This function returns the voltage range ADS1115_RANGE_XXXX in Millivolt */
-        uint16_t getVoltageRange_mV();
-        
-        /* This function returns the range as ADS1115_RANGE */
-        ADS1115_RANGE getRange();
-        
         /* With this function the alert pin will be active, when a conversion is ready.
          * In order to deactivate, use the setAlertLimit_V function
          */
@@ -326,10 +338,11 @@ class ADS1115_WE
 #endif
         bool useADS1015;
         uint16_t voltageRange;
-        ADS1115_MEASURE_MODE deviceMeasureMode;
         uint8_t i2cAddress;
         bool autoRangeMode;
         void delayAccToRate(convRate cr);
+        bool rememberChannelRanges;
+        uint8_t channelRange[8] = {0, 0, 0, 0, 0, 0, 0, 0};
         int16_t calcLimit(float rawLimit);
         uint8_t writeRegister(uint8_t reg, uint16_t val);
         uint16_t readRegister(uint8_t reg);
