@@ -38,7 +38,7 @@ ADS1115_WE adc_2 = ADS1115_WE(I2C_ADDRESS_2);
 
 void setup() {
   Wire.begin();
-  Serial.begin(9600);
+  Serial.begin(115200);
   
   if(!adc_1.init()){
     Serial.print("ADS1115 No 1 not connected!");
