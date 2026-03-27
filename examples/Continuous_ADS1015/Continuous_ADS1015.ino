@@ -24,7 +24,7 @@ ADS1015_WE adc = ADS1015_WE(I2C_ADDRESS);
 void setup() {
   bool useADS1015 = true;
   Wire.begin();
-  Serial.begin(9600);
+  Serial.begin(115200);
   if(!adc.init(useADS1015)){ // passing true will tell the lib that an ADS1015 is used
     Serial.println("ADS1015 not connected!");
   }
