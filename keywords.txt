@@ -36,10 +36,12 @@ setAlertModeAndLimit_V	KEYWORD2
 setConvRate	KEYWORD2
 getConvRate	KEYWORD2
 setMeasureMode	KEYWORD2
+getMeasureMode	KEYWORD2
 setVoltageRange_mV	KEYWORD2
 setAutoRange	KEYWORD2
 setCompareChannels	KEYWORD2
 setCompareChannels_nonblock	KEYWORD2
+setSingleChannel	KEYWORD2
 isBusy	KEYWORD2
 startSingleMeasurement	KEYWORD2
 getResult_V	KEYWORD2
@@ -47,6 +49,8 @@ getResult_mV	KEYWORD2
 getRawResult	KEYWORD2
 getResultWithRange	KEYWORD2
 getVoltageRange_mV	KEYWORD2
+setPermanentAutoRangeMode	KEYWORD2
+getRange	KEYWORD2
 setAlertPinToConversionReady	KEYWORD2
 clearAlert	KEYWORD2
 
