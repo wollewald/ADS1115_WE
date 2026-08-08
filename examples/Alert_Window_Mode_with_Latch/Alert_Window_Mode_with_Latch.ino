@@ -16,7 +16,7 @@
 #include<ADS1115_WE.h> 
 #include<Wire.h>
 #define I2C_ADDRESS 0x48
-volatile int interruptPin = 2;
+int interruptPin = 2;
 int ledPin = 10;
 volatile bool outOfLimit = false;
 
@@ -98,7 +98,7 @@ void setup() {
 
    /* Choose maximum limit or maximum and minimum alert limit (window) in volts - alert pin will 
    *  assert when measured values are beyond the maximum limit or outside the window 
-   *  Upper limit first: setAlertLimit_V(MODE, maximum, minimum)
+   *  Upper limit first: setAlertModeAndLimit_V(MODE, maximum, minimum)
    *  In max limit mode the minimum value is the limit where the alert pin assertion will be cleared 
    *  again (if not latched!)  
    * 
@@ -122,10 +122,10 @@ void setup() {
    * ADS1115_ACT_LOW  ->  active low (default)   
    * ADS1115_ACT_HIGH ->  active high
    */
-  //adc.setAlertPol(ADS1115_ACT_LOW); //uncomment if you want to change the default
+  //adc.setAlertPol(ADS1115_ACT_HIGH); //uncomment if you want to change the default
  
   /* With this function the alert pin will assert, when a conversion is ready.
-   * In order to deactivate, use the setAlertLimit_V function  
+   * In order to deactivate, use the setAlertModeAndLimit_V function 
    */
   //adc.setAlertPinToConversionReady(); //uncomment if you want to change the default
 
