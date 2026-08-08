@@ -92,7 +92,7 @@ void setup() {
 
    /* Choose maximum limit or maximum and minimum alert limit (window) in volts - alert pin will 
    *  assert when measured values are beyond the maximum limit or outside the window 
-   *  Upper limit first: setAlertLimit_V(MODE, maximum, minimum)
+   *  Upper limit first: setAlertModeAndLimit_V(MODE, maximum, minimum)
    *  In max limit mode the minimum value is the limit where the alert pin assertion will be cleared
    *  (if not latched)  
    * 
@@ -116,10 +116,10 @@ void setup() {
    * ADS1115_ACT_LOW  ->  active low (default)   
    * ADS1115_ACT_HIGH ->  active high
    */
-  //adc.setAlertPol(ADS1115_ACT_LOW); //uncomment if you want to change the default
+  //adc.setAlertPol(ADS1115_ACT_HIGH); //uncomment if you want to change the default
  
   /* With this function the alert pin assert, when a conversion is ready.
-   * In order to deactivate, use the setAlertLimit_V function  
+   * In order to deactivate, use the setAlertModeAndLimit_V function  
    */
   adc.setAlertPinToConversionReady(); //needed for this sketch
 
