@@ -14,7 +14,7 @@
 #include<ADS1115_WE.h> 
 #include<Wire.h>
 #define I2C_ADDRESS 0x48
-volatile int interruptPin = 2;
+int interruptPin = 2;
 int ledPin = 10;
 volatile bool outOfLimit = false;
 
